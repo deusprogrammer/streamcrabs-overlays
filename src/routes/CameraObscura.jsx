@@ -8,6 +8,8 @@ class CameraObscura extends React.Component {
     constructor() {
         super();
 
+        this.playing = false;
+
         this.textRef = React.createRef();
         this.imageRef1 = React.createRef();
         this.imageRef2 = React.createRef();
@@ -69,6 +71,12 @@ class CameraObscura extends React.Component {
 	}
 
 	birdup = async () => {
+        if (this.playing) {
+            return;
+        }
+
+        this.playing = true;
+
         this.stages[0].current.style.display = "block";
         let audio = new Audio(`${process.env.PUBLIC_URL}/birdup.mp3`);
         await audio.play();
@@ -81,6 +89,7 @@ class CameraObscura extends React.Component {
                     for (let s of this.stages) {
                         s.current.style.display = "none";
                     }
+                    this.playing = false;
                 }, 2000);
                 return;
             }
