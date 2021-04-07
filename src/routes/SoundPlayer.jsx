@@ -3,14 +3,10 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 let urlParams = new URLSearchParams(window.location.search);
 
-const fontSize = 32;
-
-class DeathCounter extends React.Component {
-	state = {
-		deaths: 0,
-		textScale: 1,
-		direction: 1
-	}
+class SoundPlayer extends React.Component {
+    state = {
+        soundPlaying: false
+    }
 
 	connect = async () => {
         const ws = new W3CWebSocket('wss://deusprogrammer.com/api/ws/twitch');
@@ -26,8 +22,11 @@ class DeathCounter extends React.Component {
         ws.onmessage = async (message) => {
             let event = JSON.parse(message.data);
             
-			if (event.type === "DEATH_COUNT") {
-				this.onDeath();
+			if (event.type === "PLAY_SOUND") {
+				var audio = new Audio('https://www.soundjay.com/human/fart-08.mp3');
+                this.setState({soundPlaying: true});
+                audio.addEventListener("ended", () => {this.setState({soundPlaying: false})});
+                await audio.play();
 			}
         };
 
@@ -60,59 +59,24 @@ class DeathCounter extends React.Component {
         document.removeEventListener("contextmenu", this.onReset);
 	}
 
-	onReset = (e) => {
-		this.setState({deaths: 0, textScale: 1, direction: 1});
-		e.preventDefault();
-		return false;
-	}
-
-	onDeath = () => {
-		this.setState((prevState) => {
-			return {
-				deaths: prevState.deaths + 1,
-				direction: 1,
-				textScale: 1
-			}
-		});
-
-		let interval = setInterval(() => {
-			//If scaling up
-			if (this.state.textScale <= 2 && this.state.direction > 0) {
-				this.setState((prevState) => {
-					return {
-						textScale: Math.min(prevState.textScale + 0.1, 2)
-					}
-				});
-			}
-
-			// If scaling down
-			if (this.state.textScale >= 1 && this.state.direction < 0) {
-				this.setState((prevState) => {
-					return {
-						textScale: Math.max(prevState.textScale - 0.1, 1)
-					}
-				});
-			}
-
-			// If done animating up
-			if (this.state.textScale >= 2 && this.state.direction > 0) {
-				this.setState({direction: -1});
-			}
-
-			// If done animating down
-			if (this.state.textScale <= 1 && this.state.direction < 0) {
-				clearInterval(interval);
-			}
-		}, 10);
-	}
-
 	render() {
 		return (
 			<div style={{height: "100vh", width: "100vw", userSelect: "none"}} className="App">
-				<span style={{fontWeight: "bolder", fontSize: `${this.state.textScale * fontSize}pt`, WebkitTextStroke: "2px black", WebkitTextFillColor: "white", lineHeight: "100vh", height: "100vh"}}>Deaths: {this.state.deaths}</span>
-			</div>
+                {this.state.soundPlaying ? 
+                    <img 
+                        style={{
+                            position: "absolute",
+                            width: "100px",
+                            height: "100px",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)"
+                        }} 
+                        src={`${process.env.PUBLIC_URL}/speaker.png`} /> 
+                : null  }
+            </div>
 		);
 	}
 }
 
-export default DeathCounter;
+export default SoundPlayer;
