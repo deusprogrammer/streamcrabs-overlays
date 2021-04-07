@@ -37,7 +37,7 @@ class CameraObscura extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "BIRDUP") {
-				
+				this.birdup();
 			}
         };
 
@@ -61,14 +61,14 @@ class CameraObscura extends React.Component {
 			this.connect();
 		}
 		
-		document.addEventListener("click", this.onClick);
+		document.addEventListener("click", this.birdup);
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener("click", this.onClick);
+		document.removeEventListener("click", this.birdup);
 	}
 
-	onClick = async () => {
+	birdup = async () => {
         this.stages[0].current.style.display = "block";
         let audio = new Audio(`${process.env.PUBLIC_URL}/birdup.mp3`);
         await audio.play();
