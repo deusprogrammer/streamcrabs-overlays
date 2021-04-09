@@ -33,6 +33,14 @@ class CameraObscura extends React.Component {
                 from: "PANEL",
                 channelId: urlParams.get("channelId")
             }));
+
+            setInterval(() => {
+                ws.send(JSON.stringify({
+                    type: "PING_SERVER",
+                    from: "PANEL",
+                    channelId: urlParams.get("channelId")
+                }));
+            }, 20 * 1000);
         };
 
         ws.onmessage = async (message) => {
