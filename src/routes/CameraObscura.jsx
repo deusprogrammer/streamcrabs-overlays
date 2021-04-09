@@ -78,7 +78,7 @@ class CameraObscura extends React.Component {
         this.playing = true;
 
         this.stages[0].current.style.display = "block";
-        let audio = new Audio(`${process.env.PUBLIC_URL}/birdup.mp3`);
+        let audio = new Audio(`${process.env.PUBLIC_URL}/sounds/birdup.mp3`);
         await audio.play();
 
         let stage = 1;
@@ -104,12 +104,12 @@ class CameraObscura extends React.Component {
 		return (
 			<div style={{height: "100vh", width: "100vw", userSelect: "none", position: "relative"}} className="App">
 				<div  style={{position: "absolute", fontFamily: "Cooper Black", WebkitTextStroke: "5px black", WebkitTextFillColor: "#CE01E2", bottom: "0px", left: "50%", transform: "translate(-50%, -50%)", fontSize: "70pt",  zIndex: "200", display: "none"}} ref={this.textRef}>BIRD UP!</div>
-                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "20%", zIndex: "101", display: "none"}} ref={this.imageRef1} src={`${process.env.PUBLIC_URL}/birdup.png`} />
-                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "40%", zIndex: "102", display: "none"}} ref={this.imageRef2} src={`${process.env.PUBLIC_URL}/birdup.png`} />
-                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "60%", zIndex: "103", display: "none"}} ref={this.imageRef3} src={`${process.env.PUBLIC_URL}/birdup.png`} />
-                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "80%", zIndex: "104", display: "none"}} ref={this.imageRef4} src={`${process.env.PUBLIC_URL}/birdup.png`} />
-                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "100%", zIndex: "105", display: "none"}} ref={this.imageRef5} src={`${process.env.PUBLIC_URL}/birdup.png`} />
-                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "120%", zIndex: "106", display: "none"}} ref={this.imageRef6} src={`${process.env.PUBLIC_URL}/birdup.png`} />
+                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "20%", zIndex: "101", display: "none"}} ref={this.imageRef1} src={`${process.env.PUBLIC_URL}/images/birdup.png`} />
+                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "40%", zIndex: "102", display: "none"}} ref={this.imageRef2} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
+                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "60%", zIndex: "103", display: "none"}} ref={this.imageRef3} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
+                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "80%", zIndex: "104", display: "none"}} ref={this.imageRef4} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
+                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "100%", zIndex: "105", display: "none"}} ref={this.imageRef5} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
+                <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "120%", zIndex: "106", display: "none"}} ref={this.imageRef6} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
 			</div>
 		);
 	}

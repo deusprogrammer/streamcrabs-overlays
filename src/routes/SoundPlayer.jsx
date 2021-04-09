@@ -2,6 +2,7 @@ import React from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 let urlParams = new URLSearchParams(window.location.search);
+const randomSoundCount = 8;
 
 class SoundPlayer extends React.Component {
     state = {
@@ -23,7 +24,7 @@ class SoundPlayer extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "PLAY_SOUND") {
-				var audio = new Audio('https://www.soundjay.com/human/fart-08.mp3');
+				var audio = new Audio(`${process.env.PUBLIC_URL}/sounds/random/${Math.ceil((Math.random() * randomSoundCount))}.mp3`);
                 this.setState({soundPlaying: true});
                 audio.addEventListener("ended", () => {this.setState({soundPlaying: false})});
                 await audio.play();
@@ -72,7 +73,7 @@ class SoundPlayer extends React.Component {
                             left: "50%",
                             transform: "translate(-50%, -50%)"
                         }} 
-                        src={`${process.env.PUBLIC_URL}/speaker.png`} /> 
+                        src={`${process.env.PUBLIC_URL}/images/speaker.png`} /> 
                 : null  }
             </div>
 		);
