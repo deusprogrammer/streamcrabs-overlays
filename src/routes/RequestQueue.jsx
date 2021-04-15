@@ -73,7 +73,7 @@ class RequestQueue extends React.Component {
 		return (
 			<div style={{height: "100vh", width: "100vw", userSelect: "none", position: "relative"}} className="App">
                     <div style={{width: "100vw", position: "absolute", bottom: "0px", left: "0px", textAlign: "center", fontSize: "20pt", WebkitTextStroke: "1px black", WebkitTextFillColor: "white"}} onClick={this.showQueue}>
-                        {this.state.requestList.length > 0 ? <marquee>Next up: {this.state.requestList[this.state.requestList.length - 1].request} from {this.state.requestList[0].requester}</marquee>
+                        {this.state.requestList.length > 0 ? <marquee>Next up: {this.state.requestList[this.state.requestList.length - 1].request} from {this.state.requestList[this.state.requestList.length - 1].requester}</marquee>
                         :
                         <marquee>No requests so far.  Make a request by donating!</marquee>}
                     </div>
