@@ -80,7 +80,7 @@ class RequestQueue extends React.Component {
                     <div style={{width: "100vw", position: "absolute", bottom: "0px", left: "0px", textAlign: "center"}}>
                         <div className={this.state.mode === "QUEUE" ? "open" : "closed"} style={{maxWidth: "50%", margin: "auto", padding: "0px 5px", backgroundColor: "gray", color: "white"}}>
                             <strong>Coming up:</strong>
-                            {this.state.requestList.reverse().slice(0, 3).map((request, index) => {
+                            {this.state.requestList.slice().reverse().slice(0, 3).map((request, index) => {
                                 return (
                                     <div key={`entry-${index}`} style={{color: index === 0 ? "yellow" : "white"}}>
                                         {index + 1}: {request.request} from {request.requester}
