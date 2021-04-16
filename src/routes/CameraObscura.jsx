@@ -19,6 +19,7 @@ class CameraObscura extends React.Component {
         this.imageRef6 = React.createRef();
 
         this.stages = [this.textRef, this.imageRef1, this.imageRef2, this.imageRef3, this.imageRef4, this.imageRef5, this.imageRef6];
+        this.birdQueue = [];
 
         this.state = {
         }
@@ -47,7 +48,8 @@ class CameraObscura extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "BIRDUP") {
-				this.birdup();
+                this.birdQueue.push({});
+				//this.birdup();
 			}
         };
 
@@ -65,26 +67,27 @@ class CameraObscura extends React.Component {
         };
     }
 
+    consumer = async () => {
+        if (this.birdQueue.length <= 0 || this.playing || !this.stages[0].current) {
+            return;
+        }
+
+        this.birdQueue = this.birdQueue.slice(1);
+        this.playing = true;
+
+        await this.birdup();
+    }
+
 	componentDidMount() {
 		// If a channel id is supplied, connect the websocket for updates via bot commands
 		if (urlParams.get("channelId")) {
 			this.connect();
 		}
-		
-		document.addEventListener("click", this.birdup);
-	}
 
-	componentWillUnmount() {
-		document.removeEventListener("click", this.birdup);
+        setInterval(this.consumer, 1000);
 	}
 
 	birdup = async () => {
-        if (this.playing) {
-            return;
-        }
-
-        this.playing = true;
-
         this.stages[0].current.style.display = "block";
         let audio = new Audio(`${process.env.PUBLIC_URL}/sounds/birdup.mp3`);
         await audio.play();
@@ -92,17 +95,19 @@ class CameraObscura extends React.Component {
         let stage = 1;
         let interval = setInterval(() => {
             if (stage >= this.stages.length) {
+                clearInterval(interval);
                 setTimeout(() => {
-                    clearInterval(interval);
                     for (let s of this.stages) {
                         s.current.style.display = "none";
                     }
-                    this.playing = false;
+
+                    // Delay start of next queue element by at least 5 seconds
+                    setTimeout(() => {
+                        this.playing = false;
+                    }, 5000);
                 }, 2000);
                 return;
             }
-
-            console.log("STAGE " + stage + "/" + this.stages.length);
 
             this.stages[stage++].current.style.display = "block";
         }, 300);
@@ -111,13 +116,13 @@ class CameraObscura extends React.Component {
 	render() {
 		return (
 			<div style={{height: "100vh", width: "100vw", userSelect: "none", position: "relative"}} className="App">
-				<div  style={{position: "absolute", fontFamily: "Cooper Black", WebkitTextStroke: "5px black", WebkitTextFillColor: "#CE01E2", bottom: "0px", left: "50%", transform: "translate(-50%, -50%)", fontSize: "70pt",  zIndex: "200", display: "none"}} ref={this.textRef}>BIRD UP!</div>
                 <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "20%", zIndex: "101", display: "none"}} ref={this.imageRef1} src={`${process.env.PUBLIC_URL}/images/birdup.png`} />
                 <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "40%", zIndex: "102", display: "none"}} ref={this.imageRef2} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
                 <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "60%", zIndex: "103", display: "none"}} ref={this.imageRef3} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
                 <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "80%", zIndex: "104", display: "none"}} ref={this.imageRef4} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
                 <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "100%", zIndex: "105", display: "none"}} ref={this.imageRef5} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
                 <img  alt="birdup" style={{position: "absolute", fontSize: "20px", right: "0px", bottom: "0px", height: "120%", zIndex: "106", display: "none"}} ref={this.imageRef6} src={`${process.env.PUBLIC_URL}/images//birdup.png`} />
+                <div  style={{position: "absolute", fontFamily: "Cooper Black", WebkitTextStroke: "5px black", WebkitTextFillColor: "#CE01E2", bottom: "0px", left: "50%", transform: "translate(-50%, -50%)", fontSize: "70pt",  zIndex: "200", display: "none"}} ref={this.textRef}>BIRD UP!</div>
 			</div>
 		);
 	}

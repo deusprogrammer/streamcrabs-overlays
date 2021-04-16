@@ -2,11 +2,18 @@ import React from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 let urlParams = new URLSearchParams(window.location.search);
-const randomSoundCount = 8;
+const randomSoundCount = 23;
 
 class SoundPlayer extends React.Component {
-    state = {
-        soundPlaying: false
+    constructor() {
+        super();
+        this.consumerLocked = false;
+        this.soundQueue = [];
+
+        this.state = {
+            soundPlaying: false,
+            requester: null
+        }
     }
 
 	connect = async () => {
@@ -32,10 +39,7 @@ class SoundPlayer extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "PLAY_SOUND") {
-				var audio = new Audio(`${process.env.PUBLIC_URL}/sounds/random/${Math.ceil((Math.random() * randomSoundCount))}.mp3`);
-                this.setState({soundPlaying: true});
-                audio.addEventListener("ended", () => {this.setState({soundPlaying: false})});
-                await audio.play();
+                this.soundQueue.push({requester: event.eventData.requester})
 			}
         };
 
@@ -53,11 +57,34 @@ class SoundPlayer extends React.Component {
         };
     }
 
+    consumer = async () => {
+        if (this.soundQueue.length <= 0 || this.consumerLocked) {
+            return;
+        }
+
+        let {requester} = this.soundQueue[0];
+        this.consumerLocked = true;
+        this.soundQueue = this.soundQueue.slice(1);
+        this.setState({requester});
+
+        var audio = new Audio(`${process.env.PUBLIC_URL}/sounds/random/${Math.ceil((Math.random() * randomSoundCount))}.mp3`);
+        this.setState({soundPlaying: true});
+        audio.addEventListener("ended", () => {
+            this.setState({soundPlaying: false});
+            setTimeout(() => {
+                this.consumerLocked = false;
+            }, 5000);
+        });
+        await audio.play();
+    }
+
 	componentDidMount() {
 		// If a channel id is supplied, connect the websocket for updates via bot commands
 		if (urlParams.get("channelId")) {
 			this.connect();
 		}
+
+        setInterval(this.consumer, 0);
 		
 		document.addEventListener("click", this.onDeath);
         document.addEventListener("contextmenu", this.onReset);
@@ -71,17 +98,28 @@ class SoundPlayer extends React.Component {
 	render() {
 		return (
 			<div style={{height: "100vh", width: "100vw", userSelect: "none"}} className="App">
-                {this.state.soundPlaying ? 
-                    <img 
-                        style={{
+                {this.state.soundPlaying ?
+                    <div> 
+                        <img 
+                            style={{
+                                position: "absolute",
+                                width: "100px",
+                                height: "100px",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)"
+                            }} 
+                            src={`${process.env.PUBLIC_URL}/images/speaker.png`} />
+                        <span style={{
                             position: "absolute",
-                            width: "100px",
-                            height: "100px",
                             top: "50%",
                             left: "50%",
-                            transform: "translate(-50%, -50%)"
-                        }} 
-                        src={`${process.env.PUBLIC_URL}/images/speaker.png`} /> 
+                            transform: "translate(-50%, -50%)",
+                            fontSize: "20pt",
+                            WebkitTextStroke: "1px black",
+                            WebkitTextFillColor: "white",
+                        }}>{this.state.requester}</span>
+                    </div>
                 : null  }
             </div>
 		);
