@@ -8,8 +8,7 @@ const fontSize = 32;
 class DeathCounter extends React.Component {
 	state = {
 		deaths: 0,
-		textScale: 1,
-		direction: 1
+		textScale: 1
 	}
 
 	connect = async () => {
@@ -35,6 +34,10 @@ class DeathCounter extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "DEATH_COUNT") {
+				if (event.eventData.count != -1) {
+					this.onDeath(event.eventData.count);
+				}
+
 				this.onDeath();
 			}
         };
@@ -59,33 +62,34 @@ class DeathCounter extends React.Component {
 			this.connect();
 		}
 		
-		document.addEventListener("click", this.onDeath);
-        document.addEventListener("contextmenu", this.onReset);
+		document.addEventListener("click", () => {this.onDeath()});
+        document.addEventListener("contextmenu", (e) => {this.onReset(e)});
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener("click", this.onDeath);
-        document.removeEventListener("contextmenu", this.onReset);
+		document.removeEventListener("click", () => {this.onDeath()});
+        document.removeEventListener("contextmenu", (e) => {this.onReset(e)});
 	}
 
 	onReset = (e) => {
-		this.setState({deaths: 0, textScale: 1, direction: 1});
+		this.setState({deaths: 0, textScale: 1});
 		e.preventDefault();
 		return false;
 	}
 
-	onDeath = () => {
+	onDeath = (count = null) => {
 		this.setState((prevState) => {
 			return {
-				deaths: prevState.deaths + 1,
-				direction: 1,
+				deaths: count ? count : prevState.deaths + 1,
 				textScale: 1
 			}
 		});
 
+		let direction = 1;
+
 		let interval = setInterval(() => {
 			//If scaling up
-			if (this.state.textScale <= 2 && this.state.direction > 0) {
+			if (this.state.textScale <= 2 && direction > 0) {
 				this.setState((prevState) => {
 					return {
 						textScale: Math.min(prevState.textScale + 0.1, 2)
@@ -94,7 +98,7 @@ class DeathCounter extends React.Component {
 			}
 
 			// If scaling down
-			if (this.state.textScale >= 1 && this.state.direction < 0) {
+			if (this.state.textScale >= 1 && direction < 0) {
 				this.setState((prevState) => {
 					return {
 						textScale: Math.max(prevState.textScale - 0.1, 1)
@@ -103,12 +107,12 @@ class DeathCounter extends React.Component {
 			}
 
 			// If done animating up
-			if (this.state.textScale >= 2 && this.state.direction > 0) {
-				this.setState({direction: -1});
+			if (this.state.textScale >= 2 && direction > 0) {
+				direction = -1;
 			}
 
 			// If done animating down
-			if (this.state.textScale <= 1 && this.state.direction < 0) {
+			if (this.state.textScale <= 1 && direction < 0) {
 				clearInterval(interval);
 			}
 		}, 10);

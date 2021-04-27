@@ -2,7 +2,7 @@ import React from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 let urlParams = new URLSearchParams(window.location.search);
-const randomSoundCount = 23;
+const randomSoundCount = 24;
 
 class SoundPlayer extends React.Component {
     constructor() {
