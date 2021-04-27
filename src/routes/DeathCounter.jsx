@@ -34,12 +34,7 @@ class DeathCounter extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "DEATH_COUNT") {
-				if (event.eventData.count !== -1) {
-					this.onDeath(event.eventData.count);
-					return;
-				}
-
-				this.onDeath();
+				this.onDeath(event.eventData.count);
 			}
         };
 
@@ -81,7 +76,7 @@ class DeathCounter extends React.Component {
 	onDeath = (count = null) => {
 		this.setState((prevState) => {
 			return {
-				deaths: count ? count : prevState.deaths + 1,
+				deaths: count !== -1 ? count : prevState.deaths + 1,
 				textScale: 1
 			}
 		});
