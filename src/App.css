@@ -49,3 +49,7 @@
 .open {            
   max-height: 500px ;                    
 } 
+
+body {
+  overflow: hidden
+}
