@@ -53,3 +53,13 @@
 body {
   overflow: hidden
 }
+
+.multiContainer {
+  position: relative;
+}
+
+.multiContainer > div {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
