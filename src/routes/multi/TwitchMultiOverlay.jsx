@@ -1,7 +1,7 @@
 import React from 'react';
 import BadApple from './BadApple';
 import BirdUp from './BirdUp';
-import RandomVideo from './RandomVideo';
+import RandomCustomVideo from './RandomCustomVideo';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 let urlParams = new URLSearchParams(window.location.search);
@@ -16,7 +16,8 @@ export default class TwitchMultiOverlay extends React.Component {
             show: {
                 birdup: false,
                 badapple: false,
-                randomvideo: false
+                // randomvideo: false,
+                randomcustomvideo: false
             }
         }
     }
@@ -49,8 +50,12 @@ export default class TwitchMultiOverlay extends React.Component {
                 case "BADAPPLE":
                     this.queue.push("badapple");
                     break;
-                case "RANDOM_VIDEO":
-                    this.queue.push("randomvideo");
+                // case "RANDOM_VIDEO":
+                //     this.queue.push("randomvideo");
+                //     break;
+                case "RANDOM_CUSTOM_VIDEO":
+                    this.queue.push("randomcustomvideo");
+                    this.url = event.eventData.url;
                     break;
                 case "BIRDUP":
                     this.queue.push("birdup");
@@ -119,6 +124,8 @@ export default class TwitchMultiOverlay extends React.Component {
             showComponent = <BadApple onComplete={this.reset} />;
         } else if (this.state.show.randomvideo) {
             showComponent = <RandomVideo onComplete={this.reset} />;
+        } else if (this.state.show.randomcustomvideo) {
+            showComponent = <RandomCustomVideo onComplete={this.reset} url={this.url} />;
         }
 
         return (
