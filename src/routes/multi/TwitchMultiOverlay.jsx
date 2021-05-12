@@ -122,8 +122,6 @@ export default class TwitchMultiOverlay extends React.Component {
             showComponent = <BirdUp onComplete={this.reset} />;
         } else if (this.state.show.badapple) {
             showComponent = <BadApple onComplete={this.reset} />;
-        } else if (this.state.show.randomvideo) {
-            showComponent = <RandomVideo onComplete={this.reset} />;
         } else if (this.state.show.randomcustomvideo) {
             showComponent = <RandomCustomVideo onComplete={this.reset} url={this.url} />;
         }
