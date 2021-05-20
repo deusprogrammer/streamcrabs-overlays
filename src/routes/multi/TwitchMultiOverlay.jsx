@@ -3,6 +3,7 @@ import BadApple from './BadApple';
 import BirdUp from './BirdUp';
 import RandomCustomVideo from './RandomCustomVideo';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import WhatTheDub from './WhatTheDub';
 
 let urlParams = new URLSearchParams(window.location.search);
 
@@ -11,13 +12,15 @@ export default class TwitchMultiOverlay extends React.Component {
         super(props);
         this.playing = false;
         this.queue = [];
+        this.event = {};
 
         this.state = {
             show: {
                 birdup: false,
                 badapple: false,
                 // randomvideo: false,
-                randomcustomvideo: false
+                randomcustomvideo: false,
+                wtd: false
             }
         }
     }
@@ -44,7 +47,7 @@ export default class TwitchMultiOverlay extends React.Component {
         ws.onmessage = async (message) => {
             let event = JSON.parse(message.data);
 
-            console.log("EVENT: " + event.type);
+            console.log("EVENT: " + JSON.stringify(event, null, 5));
             
 			switch(event.type) {
                 case "BADAPPLE":
@@ -59,6 +62,10 @@ export default class TwitchMultiOverlay extends React.Component {
                     break;
                 case "BIRDUP":
                     this.queue.push("birdup");
+                    break;
+                case "DUB":
+                    this.queue.push("wtd");
+                    this.event = event;
                     break;
 			}
         };
@@ -124,6 +131,8 @@ export default class TwitchMultiOverlay extends React.Component {
             showComponent = <BadApple onComplete={this.reset} />;
         } else if (this.state.show.randomcustomvideo) {
             showComponent = <RandomCustomVideo onComplete={this.reset} url={this.url} />;
+        } else if (this.state.show.wtd) {
+            showComponent = <WhatTheDub onComplete={this.reset} url={this.event.eventData.videoData.videoUrl} subtitles={this.event.eventData.videoData.subtitles} substitution={this.event.eventData.substitution} />;
         }
 
         return (
