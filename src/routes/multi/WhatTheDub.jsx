@@ -15,16 +15,8 @@ export default class WhatTheDub extends React.Component {
 
         if (window.speechSynthesis) {
             console.log("speechSynthesis supported");
+            console.log(window.speechSynthesis.onvoiceschanged);
         }
-
-        console.log("VOICES LOADED");
-        this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
-            return element.name === "Microsoft David Desktop - English (United States)";
-        });
-
-        this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
-            return element.name === "Microsoft Zira Desktop - English (United States)";
-        });
 
         this.state = {
             vh: Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0),
@@ -48,7 +40,18 @@ export default class WhatTheDub extends React.Component {
             })
         };
 
-        this.videoElement.current.play();
+        window.speechSynthesis.onvoiceschanged = () => {
+            console.log("VOICES LOADED");
+            this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
+                return element.name === "Microsoft David Desktop - English (United States)";
+            });
+
+            this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
+                return element.name === "Microsoft Zira Desktop - English (United States)";
+            });
+
+            this.videoElement.current.play();
+        };
     }
 
     setCurrentText = (currentText) => {
@@ -86,27 +89,18 @@ export default class WhatTheDub extends React.Component {
                                 voice = this.femaleVoice;
                             }
 
-                            console.log("VOICE: " + voice.name);
-
                             if (this.props.substitution) {
                                 this.isTalking = true;
                                 this.setCurrentText(this.props.substitution);
-
                                 let msg = new SpeechSynthesisUtterance();
                                 msg.voice = voice;
                                 msg.text = this.props.substitution;
-
                                 msg.onend = () => {
                                     this.isTalking = false;
                                     let ve = document.getElementById("videoElement");
                                     ve.volume = 1.0;
                                     ve.play();
                                 }
-
-                                if (window.speechSynthesis.speak) {
-                                    console.log("speak supported");
-                                }
-
                                 window.speechSynthesis.speak(msg);
                             } else {
                                 this.setCurrentText("<Missing audio>");
