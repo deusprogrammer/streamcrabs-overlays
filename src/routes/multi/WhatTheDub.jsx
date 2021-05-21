@@ -9,15 +9,6 @@ export default class WhatTheDub extends React.Component {
         this.isTalking = false;
         this.currentSub = null;
 
-        if (SpeechSynthesisUtterance) {
-            console.log("SpeechSynthesisUtterance supported");
-        }
-
-        if (window.speechSynthesis) {
-            console.log("speechSynthesis supported");
-            console.log(window.speechSynthesis.onvoiceschanged);
-        }
-
         this.state = {
             vh: Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0),
             vw: Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
@@ -71,18 +62,10 @@ export default class WhatTheDub extends React.Component {
 
                                 console.log(subtitle.text);
 
-                                this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
-                                    return element.name === "Microsoft David Desktop - English (United States)";
-                                });
-                        
-                                this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
-                                    return element.name === "Microsoft Zira Desktop - English (United States)";
-                                });
-
                                 if (subtitle.text === "[male_dub]") {
-                                    voice = this.maleVoice;
+                                    voice = window.maleVoice;
                                 } else {
-                                    voice = this.femaleVoice;
+                                    voice = window.femaleVoice;
                                 }
 
                                 this.isTalking = true;

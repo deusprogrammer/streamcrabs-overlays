@@ -4,6 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+window.speechSynthesis.onvoiceschanged = () => {
+  window.maleVoice = window.speechSynthesis.getVoices().find((element) => {
+      return element.name === "Microsoft David Desktop - English (United States)";
+  });
+
+  window.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
+      return element.name === "Microsoft Zira Desktop - English (United States)";
+  });
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
