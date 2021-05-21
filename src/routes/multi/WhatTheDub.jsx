@@ -40,18 +40,13 @@ export default class WhatTheDub extends React.Component {
             })
         };
 
-        window.speechSynthesis.onvoiceschanged = () => {
-            console.log("VOICES LOADED");
-            this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
-                return element.name === "Microsoft David Desktop - English (United States)";
-            });
+        this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
+            return element.name === "Microsoft David Desktop - English (United States)";
+        });
 
-            this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
-                return element.name === "Microsoft Zira Desktop - English (United States)";
-            });
-
-            this.videoElement.current.play();
-        };
+        this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
+            return element.name === "Microsoft Zira Desktop - English (United States)";
+        });
     }
 
     setCurrentText = (currentText) => {
@@ -131,6 +126,7 @@ export default class WhatTheDub extends React.Component {
                         id="videoElement"
                         src={this.props.url}
                         style={{width: this.state.vw, height: this.state.vh}}
+                        autoPlay
                         controls={false}
                         crossOrigin="anonymous"
                         onTimeUpdate={(e) => {this.updateSubtitle(e)}}
