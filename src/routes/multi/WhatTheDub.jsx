@@ -39,14 +39,6 @@ export default class WhatTheDub extends React.Component {
                 vw: Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
             })
         };
-
-        this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
-            return element.name === "Microsoft David Desktop - English (United States)";
-        });
-
-        this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
-            return element.name === "Microsoft Zira Desktop - English (United States)";
-        });
     }
 
     setCurrentText = (currentText) => {
@@ -85,6 +77,14 @@ export default class WhatTheDub extends React.Component {
                             }
 
                             if (this.props.substitution) {
+                                this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
+                                    return element.name === "Microsoft David Desktop - English (United States)";
+                                });
+                        
+                                this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
+                                    return element.name === "Microsoft Zira Desktop - English (United States)";
+                                });
+                                
                                 this.isTalking = true;
                                 this.setCurrentText(this.props.substitution);
                                 let msg = new SpeechSynthesisUtterance();
