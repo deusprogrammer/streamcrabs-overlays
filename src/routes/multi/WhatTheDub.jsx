@@ -9,12 +9,12 @@ export default class WhatTheDub extends React.Component {
         this.isTalking = false;
         this.currentSub = null;
 
-        if (!SpeechSynthesisUtterance) {
-            console.log("SpeechSynthesisUtterance not supported");
+        if (SpeechSynthesisUtterance) {
+            console.log("SpeechSynthesisUtterance supported");
         }
 
-        if (!window.speechSynthesis) {
-            console.log("speechSynthesis not supported");
+        if (window.speechSynthesis) {
+            console.log("speechSynthesis supported");
         }
 
         this.state = {
@@ -39,18 +39,7 @@ export default class WhatTheDub extends React.Component {
             })
         };
 
-        window.speechSynthesis.onvoiceschanged = () => {
-            console.log("VOICES LOADED");
-            this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
-                return element.name === "Microsoft David Desktop - English (United States)";
-            });
-
-            this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
-                return element.name === "Microsoft Zira Desktop - English (United States)";
-            });
-
-            this.videoElement.current.play();
-        }
+        this.videoElement.current.play();
     }
 
     setCurrentText = (currentText) => {
@@ -82,12 +71,8 @@ export default class WhatTheDub extends React.Component {
 
                             console.log(subtitle.text);
 
-                            if (subtitle.text === "[male_dub]") {
-                                voice = this.maleVoice;
-                            } else {
-                                voice = this.femaleVoice;
-                            }
-
+                            voice = window.speechSynthesis.getVoices()[0];
+                            
                             if (this.props.substitution) {
                                 this.isTalking = true;
                                 this.setCurrentText(this.props.substitution);
