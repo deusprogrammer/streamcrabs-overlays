@@ -9,12 +9,12 @@ export default class WhatTheDub extends React.Component {
         this.isTalking = false;
         this.currentSub = null;
 
-        if (SpeechSynthesisUtterance) {
-            console.log("SpeechSynthesisUtterance supported");
+        if (!SpeechSynthesisUtterance) {
+            console.log("SpeechSynthesisUtterance not supported");
         }
 
-        if ( window.speechSynthesis) {
-            console.log("speechSynthesis supported");
+        if (!window.speechSynthesis) {
+            console.log("speechSynthesis not supported");
         }
 
         this.state = {
@@ -40,6 +40,7 @@ export default class WhatTheDub extends React.Component {
         };
 
         window.speechSynthesis.onvoiceschanged = () => {
+            console.log("VOICES LOADED");
             this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
                 return element.name === "Microsoft David Desktop - English (United States)";
             });
