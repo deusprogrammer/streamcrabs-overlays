@@ -66,17 +66,11 @@ export default class WhatTheDub extends React.Component {
                         if (subtitle.text === "[male_dub]" || subtitle.text === "[female_dub]") {
                             this.videoElement.current.volume = 0.0;
 
-                            let voice = null;
-
-                            console.log(subtitle.text);
-
-                            if (subtitle.text === "[male_dub]") {
-                                voice = this.maleVoice;
-                            } else {
-                                voice = this.femaleVoice;
-                            }
-
                             if (this.props.substitution) {
+                                let voice = null;
+
+                                console.log(subtitle.text);
+
                                 this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
                                     return element.name === "Microsoft David Desktop - English (United States)";
                                 });
@@ -84,7 +78,13 @@ export default class WhatTheDub extends React.Component {
                                 this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
                                     return element.name === "Microsoft Zira Desktop - English (United States)";
                                 });
-                                
+
+                                if (subtitle.text === "[male_dub]") {
+                                    voice = this.maleVoice;
+                                } else {
+                                    voice = this.femaleVoice;
+                                }
+
                                 this.isTalking = true;
                                 this.setCurrentText(this.props.substitution);
                                 let msg = new SpeechSynthesisUtterance();
@@ -126,7 +126,7 @@ export default class WhatTheDub extends React.Component {
                         id="videoElement"
                         src={this.props.url}
                         style={{width: this.state.vw, height: this.state.vh}}
-                        autoPlay
+                        autoPlay={true}
                         controls={false}
                         crossOrigin="anonymous"
                         onTimeUpdate={(e) => {this.updateSubtitle(e)}}
