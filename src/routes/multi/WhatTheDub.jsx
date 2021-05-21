@@ -1,13 +1,5 @@
 import React from 'react';
 
-const maleVoice = window.speechSynthesis.getVoices().find((element) => {
-    return element.name === "Microsoft David Desktop - English (United States)";
-});
-
-const femaleVoice = window.speechSynthesis.getVoices().find((element) => {
-    return element.name === "Microsoft Zira Desktop - English (United States)";
-});
-
 export default class WhatTheDub extends React.Component {
     constructor(props) {
         super(props);
@@ -16,6 +8,14 @@ export default class WhatTheDub extends React.Component {
         this.timeOut = null;
         this.isTalking = false;
         this.currentSub = null;
+
+        if (SpeechSynthesisUtterance) {
+            console.log("SpeechSynthesisUtterance supported");
+        }
+
+        if ( window.speechSynthesis) {
+            console.log("speechSynthesis supported");
+        }
 
         this.state = {
             vh: Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0),
@@ -30,7 +30,7 @@ export default class WhatTheDub extends React.Component {
                 clearTimeout(this.timeOut);
             }
             this.props.onComplete("wtd");
-        })
+        });
 
         window.onresize = () => {
             this.setState({
@@ -39,7 +39,17 @@ export default class WhatTheDub extends React.Component {
             })
         };
 
-        this.videoElement.current.play();
+        window.speechSynthesis.onvoiceschanged = () => {
+            this.maleVoice = window.speechSynthesis.getVoices().find((element) => {
+                return element.name === "Microsoft David Desktop - English (United States)";
+            });
+
+            this.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
+                return element.name === "Microsoft Zira Desktop - English (United States)";
+            });
+
+            this.videoElement.current.play();
+        }
     }
 
     setCurrentText = (currentText) => {
@@ -47,63 +57,67 @@ export default class WhatTheDub extends React.Component {
     }
 
     updateSubtitle = (e) => {
-        let index = 0;
-        for (let subtitle of this.props.subtitles) {
-            if (e.target.currentTime > subtitle.startTime && e.target.currentTime < subtitle.endTime) {
-                if (subtitle.text === "[male_dub]" || subtitle.text === "[female_dub]") {
-                    this.videoElement.current.volume = 0.0;
-                } else {
-                    this.videoElement.current.volume = 1.0;
-                }
-
-                if (!this.state.currentText || index !== this.currentSub) {
-                    if (this.isTalking) {
-                        console.log("PAUSE");
-                        this.videoElement.current.pause();
-                        return;
-                    }
-
+        try {
+            let index = 0;
+            for (let subtitle of this.props.subtitles) {
+                if (e.target.currentTime > subtitle.startTime && e.target.currentTime < subtitle.endTime) {
                     if (subtitle.text === "[male_dub]" || subtitle.text === "[female_dub]") {
                         this.videoElement.current.volume = 0.0;
-
-                        let voice = null;
-
-                        console.log(subtitle.text);
-
-                        if (subtitle.text === "[male_dub]") {
-                            voice = maleVoice;
-                        } else {
-                            voice = femaleVoice;
-                        }
-
-                        if (this.props.substitution) {
-                            this.isTalking = true;
-                            this.setCurrentText(this.props.substitution);
-                            let msg = new SpeechSynthesisUtterance();
-                            msg.voice = voice;
-                            msg.text = this.props.substitution;
-                            msg.onend = () => {
-                                this.isTalking = false;
-                                let ve = document.getElementById("videoElement");
-                                ve.volume = 1.0;
-                                ve.play();
-                            }
-                            window.speechSynthesis.speak(msg);
-                        } else {
-                            this.setCurrentText("<Missing audio>");
-                        }
                     } else {
-                        this.setCurrentText(subtitle.text);
+                        this.videoElement.current.volume = 1.0;
                     }
 
-                    this.currentSub = index;
-                }
-                return;
-            }
-            index++;
-        }
+                    if (!this.state.currentText || index !== this.currentSub) {
+                        if (this.isTalking) {
+                            console.log("PAUSE");
+                            this.videoElement.current.pause();
+                            return;
+                        }
 
-        this.setCurrentText("");
+                        if (subtitle.text === "[male_dub]" || subtitle.text === "[female_dub]") {
+                            this.videoElement.current.volume = 0.0;
+
+                            let voice = null;
+
+                            console.log(subtitle.text);
+
+                            if (subtitle.text === "[male_dub]") {
+                                voice = this.maleVoice;
+                            } else {
+                                voice = this.femaleVoice;
+                            }
+
+                            if (this.props.substitution) {
+                                this.isTalking = true;
+                                this.setCurrentText(this.props.substitution);
+                                let msg = new SpeechSynthesisUtterance();
+                                msg.voice = voice;
+                                msg.text = this.props.substitution;
+                                msg.onend = () => {
+                                    this.isTalking = false;
+                                    let ve = document.getElementById("videoElement");
+                                    ve.volume = 1.0;
+                                    ve.play();
+                                }
+                                window.speechSynthesis.speak(msg);
+                            } else {
+                                this.setCurrentText("<Missing audio>");
+                            }
+                        } else {
+                            this.setCurrentText(subtitle.text);
+                        }
+
+                        this.currentSub = index;
+                    }
+                    return;
+                }
+                index++;
+            }
+
+            this.setCurrentText("");
+        } catch (error) {
+            console.error("Error occurred in subtitle handler: " + error);
+        }
     }
     
     render() {

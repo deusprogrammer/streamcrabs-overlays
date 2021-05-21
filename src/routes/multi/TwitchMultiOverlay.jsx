@@ -47,7 +47,7 @@ export default class TwitchMultiOverlay extends React.Component {
         ws.onmessage = async (message) => {
             let event = JSON.parse(message.data);
 
-            console.log("EVENT: " + JSON.stringify(event, null, 5));
+            // console.log("EVENT: " + JSON.stringify(event, null, 5));
             
 			switch(event.type) {
                 case "BADAPPLE":
