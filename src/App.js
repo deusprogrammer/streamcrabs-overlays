@@ -8,12 +8,14 @@ import RequestQueue from './routes/RequestQueue';
 import TwitchMultiOverlay from './routes/multi/TwitchMultiOverlay';
 import CustomSoundPlayer from './routes/CustomSoundPlayer';
 import SpeechSynthesisTester from './routes/SpeechSynthesisTester';
+import WhatTheDub from './routes/WhatTheDub';
 
 class App extends React.Component {
 	render() {
 		return (
 			<Router>
 				<Switch>
+					<Route path={`${process.env.PUBLIC_URL}/wtd`} component={WhatTheDub} exact />
 					<Route path={`${process.env.PUBLIC_URL}/speech/test`} component={SpeechSynthesisTester} exact />
 					<Route path={`${process.env.PUBLIC_URL}/multi`} component={TwitchMultiOverlay} exact />
 					<Route path={`${process.env.PUBLIC_URL}/death-counter`} component={DeathCounter} exact />
