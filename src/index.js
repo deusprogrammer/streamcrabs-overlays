@@ -6,12 +6,15 @@ import reportWebVitals from './reportWebVitals';
 
 window.speechSynthesis.onvoiceschanged = () => {
   window.maleVoice = window.speechSynthesis.getVoices().find((element) => {
-      return element.name === "Microsoft David Desktop - English (United States)";
+      return element.name === "Microsoft David - English (United States)";
   });
 
   window.femaleVoice = window.speechSynthesis.getVoices().find((element) => {
-      return element.name === "Microsoft Zira Desktop - English (United States)";
+      return element.name === "Microsoft Zira - English (United States)";
   });
+
+  console.log("MAN:   " + window.maleVoice);
+  console.log("WOMAN: " + window.femaleVoice);
 }
 
 ReactDOM.render(
