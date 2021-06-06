@@ -76,6 +76,10 @@ export default class WhatTheDub extends React.Component{
     
             let entry = this.queue[0];
             this.queue = this.queue.slice(1);
+
+            if (entry.event.eventData.substitution) {
+                entry.event.eventData.substitution = entry.event.eventData.substitution.replace(/[^\x00-\x7F]/g, "");
+            }
     
             this.setState({currentEvent: entry.event});
         }, 1000);
