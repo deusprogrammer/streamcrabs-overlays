@@ -68,8 +68,18 @@ export default class RandomCustomVideo extends React.Component {
             const green = frame.data[i + 1];
             const blue = frame.data[i + 2];
 
-            if (green > red + blue) {
-                frame.data[i + 3] = 0;
+            if (this.props.chromaKey === "green") {
+                if (green > red + blue) {
+                    frame.data[i + 3] = 0;
+                }
+            } else if (this.props.chromaKey === "red") {
+                if (red > green + blue) {
+                    frame.data[i + 3] = 0;
+                }
+            } else if (this.props.chromaKey === "blue") {
+                if (blue > red + green) {
+                    frame.data[i + 3] = 0;
+                }
             }
         }
         this.ctx2.putImageData(frame, 0, 0);

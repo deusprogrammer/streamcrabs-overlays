@@ -103,7 +103,7 @@ export default class TwitchMultiOverlay extends React.Component {
                 showComponent = <BadApple onComplete={this.reset} />;
                 break;
             case "RANDOM_CUSTOM_VIDEO":
-                showComponent = <RandomCustomVideo onComplete={this.reset} url={this.state.currentEvent.eventData.url} />;
+                showComponent = <RandomCustomVideo onComplete={this.reset} url={this.state.currentEvent.eventData.url} chromaKey={this.state.currentEvent.eventData.chromaKey} />;
                 break;
             case "BIRDUP":
                 showComponent = <BirdUp onComplete={this.reset} />;
