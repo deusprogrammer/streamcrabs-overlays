@@ -12,7 +12,8 @@ class CustomSoundPlayer extends React.Component {
 
         this.state = {
             soundPlaying: false,
-            requester: null
+            requester: null,
+            mediaName: null
         }
     }
 
@@ -64,10 +65,10 @@ class CustomSoundPlayer extends React.Component {
             return;
         }
 
-        let {requester, url} = this.soundQueue[0];
+        let {requester, mediaName, url} = this.soundQueue[0];
         this.consumerLocked = true;
         this.soundQueue = this.soundQueue.slice(1);
-        this.setState({requester});
+        this.setState({requester, mediaName});
 
         var audio = new Audio(url);
         this.setState({soundPlaying: true});
@@ -106,9 +107,9 @@ class CustomSoundPlayer extends React.Component {
                             src={`${process.env.PUBLIC_URL}/images/speaker.png`} />
                         <span style={{
                             position: "absolute",
-                            bottom: "0px",
+                            top: "50%",
                             left: "50%",
-                            transform: "translateY(-50%)",
+                            transform: "translate(-50%, 10px)",
                             fontSize: "20pt",
                             WebkitTextStroke: "1px black",
                             WebkitTextFillColor: "white",
@@ -117,7 +118,7 @@ class CustomSoundPlayer extends React.Component {
                             position: "absolute",
                             top: "50%",
                             left: "50%",
-                            transform: "translate(-50%, -50%)",
+                            transform: "translate(-50%, -20px)",
                             fontSize: "20pt",
                             WebkitTextStroke: "1px black",
                             WebkitTextFillColor: "white",
