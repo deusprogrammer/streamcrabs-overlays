@@ -99,6 +99,15 @@ export default class RandomCustomVideo extends React.Component {
                     ref={this.videoElement} />
                 <canvas height={this.state.vh} width={this.state.vw} style={{display: "none"}} ref={this.canvasElement1} />
                 <canvas height={this.state.vh} width={this.state.vw} style={{border: "1px solid black"}} ref={this.canvasElement2} />
+                <span style={{
+                            position: "absolute",
+                            bottom: "0px",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            fontSize: "20pt",
+                            WebkitTextStroke: "1px black",
+                            WebkitTextFillColor: "white",
+                }}>{this.props.mediaName} from {this.props.requester}</span>
             </div>
         )
     }

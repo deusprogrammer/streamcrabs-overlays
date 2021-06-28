@@ -23,6 +23,7 @@ class CustomSoundPlayer extends React.Component {
             ws.send(JSON.stringify({
                 type: "REGISTER_PANEL",
                 from: "PANEL",
+                name: "SOUND_PLAYER",
                 channelId: urlParams.get("channelId")
             }));
 
@@ -30,6 +31,7 @@ class CustomSoundPlayer extends React.Component {
                 ws.send(JSON.stringify({
                     type: "PING_SERVER",
                     from: "PANEL",
+                    name: "SOUND_PLAYER",
                     channelId: urlParams.get("channelId")
                 }));
             }, 20 * 1000);
@@ -39,7 +41,7 @@ class CustomSoundPlayer extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "CUSTOM_RANDOM_SOUND") {
-                this.soundQueue.push({requester: event.eventData.requester, url: event.eventData.url})
+                this.soundQueue.push({requester: event.eventData.requester, mediaName: event.eventData.mediaName, url: event.eventData.url})
 			}
         };
 
@@ -102,6 +104,15 @@ class CustomSoundPlayer extends React.Component {
                                 transform: "translate(-50%, -50%)"
                             }} 
                             src={`${process.env.PUBLIC_URL}/images/speaker.png`} />
+                        <span style={{
+                            position: "absolute",
+                            bottom: "0px",
+                            left: "50%",
+                            transform: "translateY(-50%)",
+                            fontSize: "20pt",
+                            WebkitTextStroke: "1px black",
+                            WebkitTextFillColor: "white",
+                        }}>{this.state.mediaName}</span>
                         <span style={{
                             position: "absolute",
                             top: "50%",

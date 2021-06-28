@@ -18,6 +18,7 @@ class DeathCounter extends React.Component {
             ws.send(JSON.stringify({
                 type: "REGISTER_PANEL",
                 from: "PANEL",
+				name: "DEATH_COUNTER",
                 channelId: urlParams.get("channelId")
             }));
 
@@ -25,6 +26,7 @@ class DeathCounter extends React.Component {
                 ws.send(JSON.stringify({
                     type: "PING_SERVER",
                     from: "PANEL",
+					name: "DEATH_COUNTER",
                     channelId: urlParams.get("channelId")
                 }));
             }, 20 * 1000);

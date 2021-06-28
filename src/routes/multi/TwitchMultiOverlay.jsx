@@ -24,6 +24,7 @@ export default class TwitchMultiOverlay extends React.Component {
             ws.send(JSON.stringify({
                 type: "REGISTER_PANEL",
                 from: "PANEL",
+                name: "MULTI",
                 channelId: urlParams.get("channelId")
             }));
 
@@ -31,6 +32,7 @@ export default class TwitchMultiOverlay extends React.Component {
                 ws.send(JSON.stringify({
                     type: "PING_SERVER",
                     from: "PANEL",
+                    name: "MULTI",
                     channelId: urlParams.get("channelId")
                 }));
             }, 20 * 1000);
@@ -100,13 +102,22 @@ export default class TwitchMultiOverlay extends React.Component {
 
         switch(this.state.currentEvent.type) {
             case "BADAPPLE":
-                showComponent = <BadApple onComplete={this.reset} />;
+                showComponent = <BadApple 
+                                    onComplete={this.reset}
+                                    requester={this.state.currentEvent.eventData.requester} />;
                 break;
             case "RANDOM_CUSTOM_VIDEO":
-                showComponent = <RandomCustomVideo onComplete={this.reset} url={this.state.currentEvent.eventData.url} chromaKey={this.state.currentEvent.eventData.chromaKey} />;
+                showComponent = <RandomCustomVideo 
+                                    onComplete={this.reset} 
+                                    requester={this.state.currentEvent.eventData.requester}
+                                    url={this.state.currentEvent.eventData.url} 
+                                    mediaName={this.state.currentEvent.eventData.mediaName}
+                                    chromaKey={this.state.currentEvent.eventData.chromaKey} />;
                 break;
             case "BIRDUP":
-                showComponent = <BirdUp onComplete={this.reset} />;
+                showComponent = <BirdUp 
+                                    onComplete={this.reset}
+                                    requester={this.state.currentEvent.eventData.requester} />;
                 break;
             // case "DUB":
                 // showComponent = (

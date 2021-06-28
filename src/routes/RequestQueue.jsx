@@ -16,6 +16,7 @@ class RequestQueue extends React.Component {
             ws.send(JSON.stringify({
                 type: "REGISTER_PANEL",
                 from: "PANEL",
+                name: "REQUESTS",
                 channelId: urlParams.get("channelId")
             }));
 
@@ -23,6 +24,7 @@ class RequestQueue extends React.Component {
                 ws.send(JSON.stringify({
                     type: "PING_SERVER",
                     from: "PANEL",
+                    name: "REQUESTS",
                     channelId: urlParams.get("channelId")
                 }));
             }, 20 * 1000);

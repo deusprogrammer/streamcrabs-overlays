@@ -27,6 +27,7 @@ export default class WhatTheDub extends React.Component{
             ws.send(JSON.stringify({
                 type: "REGISTER_PANEL",
                 from: "PANEL",
+                name: "WTD",
                 channelId
             }));
 
@@ -34,6 +35,7 @@ export default class WhatTheDub extends React.Component{
                 ws.send(JSON.stringify({
                     type: "PING_SERVER",
                     from: "PANEL",
+                    name: "WTD",
                     channelId
                 }));
             }, 20 * 1000);
