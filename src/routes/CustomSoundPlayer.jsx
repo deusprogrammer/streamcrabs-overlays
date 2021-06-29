@@ -109,20 +109,14 @@ class CustomSoundPlayer extends React.Component {
                             position: "absolute",
                             top: "50%",
                             left: "50%",
-                            transform: "translate(-50%, 10px)",
+                            transform: "translate(-50%, -50%)",
                             fontSize: "20pt",
                             WebkitTextStroke: "1px black",
-                            WebkitTextFillColor: "white",
-                        }}>{this.state.mediaName}</span>
-                        <span style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -20px)",
-                            fontSize: "20pt",
-                            WebkitTextStroke: "1px black",
-                            WebkitTextFillColor: "white",
-                        }}>{this.state.requester}</span>
+                            WebkitTextFillColor: "white"
+                        }}>
+                            {this.state.requester}<br/>
+                            {this.state.mediaName}
+                        </span>
                     </div>
                 : null  }
             </div>

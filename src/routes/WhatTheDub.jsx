@@ -91,9 +91,27 @@ export default class WhatTheDub extends React.Component{
         if (this.state.currentEvent && this.state.joinedMiniGame){
             return (
                 <div style={{backgroundColor: "black"}}>
-                    <div style={{position: "absolute", top: "0px", left: "0px", width: "100px", zIndex: 9999}}>
-                        <img style={{width: "200px"}} src="images/wtd.png" />
+                    <div style={{
+                        position: "absolute", 
+                        top: "0px", 
+                        left: "0px", 
+                        width: "20vw", 
+                        zIndex: 9999}}>
+                        <img style={{width: "20vw"}} src="images/wtd.png" />
                     </div>
+                    { this.state.currentEvent.eventData.requester ?
+                        <span style={{
+                            position: "absolute", 
+                            top: "0px", 
+                            left: "50%", 
+                            transform: "translateX(-50%)",
+                            fontSize: "20pt",
+                            WebkitTextStroke: "1px black",
+                            WebkitTextFillColor: "white",
+                            zIndex: "9999"}}>
+                                Submitted By {this.state.currentEvent.eventData.requester}    
+                        </span> : null
+                    }
                     <WhatTheDubPlayer
                         url={this.state.currentEvent.eventData.videoData.videoUrl} 
                         subtitles={this.state.currentEvent.eventData.videoData.subtitles} 
@@ -104,8 +122,20 @@ export default class WhatTheDub extends React.Component{
         } else {
             return (
                 <div style={{background: "black", height: "100vh"}}>
-                    <div style={{position: "absolute", top: "0px", left: "0px", width: "100px", zIndex: 9999}}>
-                        <img style={{width: "200px"}} src="images/wtd.png" />
+                    <div style={{position: "absolute", top: "0px", left: "0px", width: "20vw", zIndex: 9999}}>
+                        <img style={{width: "20vw"}} src="images/wtd.png" />
+                    </div>
+                    <div style={{
+                        position: "absolute", 
+                        width: "100vw",
+                        textAlign: "center",
+                        top: "50%", 
+                        left: "50%", 
+                        transform: "translate(-50%, -50%)",
+                        fontSize: "20pt",
+                        WebkitTextStroke: "1px black",
+                        WebkitTextFillColor: "white"}}>
+                            Submit your answer with the command "!games:wtd:answer" followed by your submission!    
                     </div>
                     {this.state.joinedMiniGame ? null : <button onClick={() => {this.setState({joinedMiniGame: true})}} style={{position: "absolute", bottom: "0px", right: "0px", width: "200px", height: "100px"}}>Click to Join Mini Games</button>}
                 </div>

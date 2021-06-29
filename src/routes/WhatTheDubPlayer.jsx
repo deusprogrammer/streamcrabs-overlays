@@ -132,9 +132,6 @@ export default class WhatTheDubPlayer extends React.Component {
         return (
             <div 
                 style={{overflow: 'hidden', width: "100vw", height: "100vh", position: "relative"}}>
-                <div style={{position: "absolute", top: "0px", left: "0px", width: "100px", zIndex: 9999}}>
-                    <img style={{width: "200px"}} src="images/wtd.png" />
-                </div>
                 <div style={{position: "absolute", top: "0px", width: "100%", height: "100vh", zIndex: 9998, backgroundColor: "black"}}>
                     <video
                         id="videoElement"
