@@ -112,6 +112,7 @@ export default class TwitchMultiOverlay extends React.Component {
                                     requester={this.state.currentEvent.eventData.requester}
                                     url={this.state.currentEvent.eventData.url} 
                                     mediaName={this.state.currentEvent.eventData.mediaName}
+                                    volume={this.state.currentEvent.eventData.volume}
                                     chromaKey={this.state.currentEvent.eventData.chromaKey} />;
                 break;
             case "BIRDUP":

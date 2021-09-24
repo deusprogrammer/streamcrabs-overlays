@@ -42,6 +42,7 @@ export default class RandomCustomVideo extends React.Component {
             })
         };
 
+        this.videoElement.current.volume = this.props.volume;
         this.videoElement.current.play();
     }
 

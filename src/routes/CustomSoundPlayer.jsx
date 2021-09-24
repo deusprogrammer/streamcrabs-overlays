@@ -42,7 +42,7 @@ class CustomSoundPlayer extends React.Component {
             let event = JSON.parse(message.data);
             
 			if (event.type === "CUSTOM_RANDOM_SOUND") {
-                this.soundQueue.push({requester: event.eventData.requester, mediaName: event.eventData.mediaName, url: event.eventData.url})
+                this.soundQueue.push({requester: event.eventData.requester, mediaName: event.eventData.mediaName, url: event.eventData.url, volume: event.eventData.volume})
 			}
         };
 
@@ -65,7 +65,7 @@ class CustomSoundPlayer extends React.Component {
             return;
         }
 
-        let {requester, mediaName, url} = this.soundQueue[0];
+        let {requester, mediaName, url, volume} = this.soundQueue[0];
         this.consumerLocked = true;
         this.soundQueue = this.soundQueue.slice(1);
         this.setState({requester, mediaName});
@@ -78,6 +78,7 @@ class CustomSoundPlayer extends React.Component {
                 this.consumerLocked = false;
             }, 5000);
         });
+        audio.volume = volume;
         await audio.play();
     }
 
