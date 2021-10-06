@@ -48,12 +48,12 @@ let RaidAlert = () => {
     }
 
     function create() {
-        const groundWidth = this.textures.get('ground').getSourceImage().width;
-        const groundHeight = this.textures.get('ground').getSourceImage().height;
-        const waterWidth = this.textures.get('water').getSourceImage().width;
-        const groundHeights = [Math.random() * 100 + 200, Math.random() * 100 + 200];
         const scale = this.game.scale.width/scaleDimensions.w;
-
+        const groundWidth = this.textures.get('ground').getSourceImage().width * scale;
+        const groundHeight = this.textures.get('ground').getSourceImage().height * scale;
+        const waterWidth = this.textures.get('water').getSourceImage().width * scale;
+        const groundHeights = [(Math.random() * 100 + 200) * scale, (Math.random() * 100 + 200) * scale];
+        
         console.log("SCALE: " + scale);
 
         ground = this.physics.add.staticGroup();
@@ -151,12 +151,12 @@ let RaidAlert = () => {
             water.x = waterX;
             water.y = this.game.scale.height + 100;
             water.refreshBody();
-            waterX += (waterWidth * scale);
+            waterX += (waterWidth);
         }
 
         // Draw ground
         for (let i = 0; i < 2; i++) {
-            let x = i * ((groundWidth * scale) + 200);
+            let x = i * ((groundWidth) + 200);
             let height = groundHeights[i];
             let g1 = ground.create(x, this.game.scale.height + height, 'ground');
             g1.setOrigin(0, 1);
