@@ -151,12 +151,12 @@ let RaidAlert = () => {
             water.x = waterX;
             water.y = this.game.scale.height + 100;
             water.refreshBody();
-            waterX += waterWidth;
+            waterX += (waterWidth * scale);
         }
 
         // Draw ground
         for (let i = 0; i < 2; i++) {
-            let x = i * (groundWidth + 200);
+            let x = i * ((groundWidth * scale) + 200);
             let height = groundHeights[i];
             let g1 = ground.create(x, this.game.scale.height + height, 'ground');
             g1.setOrigin(0, 1);
