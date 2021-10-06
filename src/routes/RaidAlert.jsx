@@ -8,6 +8,8 @@ let RaidAlert = () => {
     let isDying = false;
     let timeout = null;
 
+    let scaleDimensions = {w: 1440, h: 820};
+
     const [clicked, setClicked] = useState(false);
     const [raider, setRaider] = useState("daddyfartbux");
     const [raidSize, setRaidSize] = useState(100);
@@ -50,6 +52,9 @@ let RaidAlert = () => {
         const groundHeight = this.textures.get('ground').getSourceImage().height;
         const waterWidth = this.textures.get('water').getSourceImage().width;
         const groundHeights = [Math.random() * 100 + 200, Math.random() * 100 + 200];
+        const scale = this.game.scale.width/scaleDimensions.w;
+
+        console.log("SCALE: " + scale);
 
         ground = this.physics.add.staticGroup();
         waterGroup = this.physics.add.staticGroup();
@@ -100,6 +105,7 @@ let RaidAlert = () => {
         let link = this.physics.add.sprite(groundWidth + 200, linkY, 'link');
         link.setOrigin(0, 1);
         link.setBounce(0.5);
+        link.setScale(scale);
         link.setGravityY(300);
         link.refreshBody();
         link.body.setCollideWorldBounds(true);
@@ -109,6 +115,7 @@ let RaidAlert = () => {
         // Draw slimes
         for (let i = 0; i < raidSize; i++) {
             let slime = this.physics.add.sprite(-i * .5, (Math.random() * (this.game.scale.height - 100)) - (groundHeight - groundHeights[0]), 'slime');
+            slime.setScale(scale);
             slime.setBounce(Math.min(1, Math.random() + 0.5));
             slime.body.setGravity(400);
             slime.anims.play('wobble', true);
@@ -139,6 +146,7 @@ let RaidAlert = () => {
         let waterX = 0;
         while (waterX < this.game.scale.width) {
             let water = waterGroup.create(0, 0, "water");
+            water.setScale(scale);
             water.setOrigin(0, 1);
             water.x = waterX;
             water.y = this.game.scale.height + 100;
@@ -150,7 +158,10 @@ let RaidAlert = () => {
         for (let i = 0; i < 2; i++) {
             let x = i * (groundWidth + 200);
             let height = groundHeights[i];
-            ground.create(x, this.game.scale.height + height, 'ground').setOrigin(0, 1).refreshBody();
+            let g1 = ground.create(x, this.game.scale.height + height, 'ground');
+            g1.setOrigin(0, 1);
+            g1.setScale(scale);
+            g1.refreshBody();
         }
 
         this.add.text(0, 0, `Raid of ${raidSize} incoming from ${raider}`, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
