@@ -6,10 +6,12 @@ let RaidAlert = () => {
 
     let isHurt = false;
     let isDying = false;
+    let timeout = null;
 
     const [clicked, setClicked] = useState(false);
     const [raider, setRaider] = useState("daddyfartbux");
     const [raidSize, setRaidSize] = useState(100);
+    const [game, setGame] = useState(null);
 
     function preload() {
         const slimeImage = process.env.PUBLIC_URL + '/images/slime-sprite.png';
@@ -78,10 +80,16 @@ let RaidAlert = () => {
         let die = this.sound.add('die', {loop: false});
         let fanfare = this.sound.add('fanfare', {loop: false, volume: 3});
         die.once('complete', () => {
-            window.location.reload();
+            this.scene.stop();
+            this.sys.game.destroy(true);
+            setClicked(false);
+            clearTimeout(timeout);
         });
         fanfare.once('complete', () => {
-            window.location.reload();
+            this.scene.stop();
+            this.sys.game.destroy(true);
+            setClicked(false);
+            clearTimeout(timeout);
         })
 
         battle.play();
@@ -145,10 +153,10 @@ let RaidAlert = () => {
             ground.create(x, this.game.scale.height + height, 'ground').setOrigin(0, 1).refreshBody();
         }
 
-        let text = this.add.text(0, 0, `Raid of ${raidSize} incoming from ${raider}`, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        this.add.text(0, 0, `Raid of ${raidSize} incoming from ${raider}`, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
 
         // Set timeout
-        setTimeout(() => {
+        timeout = setTimeout(() => {
             bgm.stop();
             fanfare.play();
         }, 10000);
@@ -177,7 +185,7 @@ let RaidAlert = () => {
             },
         };
 
-        new Phaser.Game(config);
+        setGame(new Phaser.Game(config));
     }
 
     useEffect(() => {
