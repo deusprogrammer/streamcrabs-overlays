@@ -1,9 +1,9 @@
 import React from 'react';
 import BadApple from './BadApple';
 import BirdUp from './BirdUp';
+import RaidAlert from './RaidAlert';
 import RandomCustomVideo from './RandomCustomVideo';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import WhatTheDub from './WhatTheDub';
 
 let urlParams = new URLSearchParams(window.location.search);
 
@@ -41,7 +41,7 @@ export default class TwitchMultiOverlay extends React.Component {
         ws.onmessage = async (message) => {
             let event = JSON.parse(message.data);
 
-            if (!["BIRDUP", "RANDOM_CUSTOM_VIDEO", "BADAPPLE"].includes(event.type)) {
+            if (!["BIRDUP", "RANDOM_CUSTOM_VIDEO", "BADAPPLE", "RAID"].includes(event.type)) {
                 return;
             }
 
@@ -120,15 +120,12 @@ export default class TwitchMultiOverlay extends React.Component {
                                     onComplete={this.reset}
                                     requester={this.state.currentEvent.eventData.requester} />;
                 break;
-            // case "DUB":
-                // showComponent = (
-                //     <WhatTheDub 
-                //         onComplete={this.reset} 
-                //         url={this.state.currentEvent.eventData.videoData.videoUrl} 
-                //         subtitles={this.state.currentEvent.eventData.videoData.subtitles} 
-                //         substitution={this.state.currentEvent.eventData.substitution} />
-                // )
-                // break;
+            case "RAID":
+                showComponent = <RaidAlert 
+                                    onComplete={this.reset}
+                                    raider={this.state.currentEvent.eventData.raider}
+                                    raidSize={this.state.currentEvent.eventData.raidSize} />;
+                break;
         }
 
         return (
