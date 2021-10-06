@@ -10,12 +10,14 @@ import CustomSoundPlayer from './routes/CustomSoundPlayer';
 import SpeechSynthesisTester from './routes/SpeechSynthesisTester';
 import WhatTheDub from './routes/WhatTheDub';
 import RaidAlert from './routes/RaidAlert';
+import TTS from './routes/TTS';
 
 class App extends React.Component {
 	render() {
 		return (
 			<Router>
 				<Switch>
+					<Route path={`${process.env.PUBLIC_URL}/tts`} component={TTS} exact />
 					<Route path={`${process.env.PUBLIC_URL}/wtd`} component={WhatTheDub} exact />
 					<Route path={`${process.env.PUBLIC_URL}/speech/test`} component={SpeechSynthesisTester} exact />
 					<Route path={`${process.env.PUBLIC_URL}/multi`} component={TwitchMultiOverlay} exact />
