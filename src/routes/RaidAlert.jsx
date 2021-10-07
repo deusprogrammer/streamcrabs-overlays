@@ -80,7 +80,7 @@ let RaidAlert = () => {
         });
 
         let bgm = this.sound.add('bgm', {loop: true, volume: 0.25});
-        let battle = this.sound.add('battle', {loop: false, volume: 1});
+        let battle = this.sound.add('battle', {loop: false});
         let hurt = this.sound.add('hurt', {loop: false, volume: 3});
         let die = this.sound.add('die', {loop: false});
         let fanfare = this.sound.add('fanfare', {loop: false, volume: 1});
