@@ -80,10 +80,10 @@ let RaidAlert = () => {
         });
 
         let bgm = this.sound.add('bgm', {loop: true, volume: 0.25});
-        let battle = this.sound.add('battle', {loop: false, volume: 3});
+        let battle = this.sound.add('battle', {loop: false, volume: 1});
         let hurt = this.sound.add('hurt', {loop: false, volume: 3});
         let die = this.sound.add('die', {loop: false});
-        let fanfare = this.sound.add('fanfare', {loop: false, volume: 3});
+        let fanfare = this.sound.add('fanfare', {loop: false, volume: 1});
         die.once('complete', () => {
             this.scene.stop();
             this.sys.game.destroy(true);
