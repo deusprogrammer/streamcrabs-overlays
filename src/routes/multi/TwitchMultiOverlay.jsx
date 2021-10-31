@@ -1,7 +1,8 @@
 import React from 'react';
 import BadApple from './BadApple';
 import BirdUp from './BirdUp';
-import RaidAlert from './RaidAlert';
+import ZeldaRaidAlert from './ZeldaRaidAlert';
+import YoshiRaidAlert from './YoshiRaidAlert';
 import RandomCustomVideo from './RandomCustomVideo';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -121,10 +122,17 @@ export default class TwitchMultiOverlay extends React.Component {
                                     requester={this.state.currentEvent.eventData.requester} />;
                 break;
             case "RAID":
-                showComponent = <RaidAlert 
-                                    onComplete={this.reset}
-                                    raider={this.state.currentEvent.eventData.raider}
-                                    raidSize={this.state.currentEvent.eventData.raidSize} />;
+                if (this.state.currentEvent.eventData.raidTheme === "YOSHI") {
+                    showComponent = <YoshiRaidAlert 
+                                        onComplete={this.reset}
+                                        raider={this.state.currentEvent.eventData.raider}
+                                        raidSize={this.state.currentEvent.eventData.raidSize} />;
+                } else {
+                    showComponent = <ZeldaRaidAlert 
+                                        onComplete={this.reset}
+                                        raider={this.state.currentEvent.eventData.raider}
+                                        raidSize={this.state.currentEvent.eventData.raidSize} />;
+                }
                 break;
         }
 
