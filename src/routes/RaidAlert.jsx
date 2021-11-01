@@ -7,13 +7,14 @@ let RaidAlert = () => {
     let isHurt = false;
     let isDying = false;
     let timeout = null;
+    let text;
+    let scaleDirection = 1;
 
     let scaleDimensions = {w: 1440, h: 820};
 
     const [clicked, setClicked] = useState(false);
     const [raider, setRaider] = useState("daddyfartbux");
     const [raidSize, setRaidSize] = useState(100);
-    const [game, setGame] = useState(null);
 
     function preload() {
         const slimeImage = process.env.PUBLIC_URL + '/images/slime-sprite.png';
@@ -164,7 +165,8 @@ let RaidAlert = () => {
             g1.refreshBody();
         }
 
-        this.add.text(0, 0, `Raid of ${raidSize} incoming from ${raider}`, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, `Raid of ${raidSize} incoming from ${raider}`, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        text.setOrigin(0.5, 0.5);
 
         // Set timeout
         timeout = setTimeout(() => {
@@ -174,6 +176,11 @@ let RaidAlert = () => {
     }
 
     function update() {
+        text.setScale(text.scale + (scaleDirection * 0.01));
+        text.tint = Math.random() * 0xffffff;
+        if (text.scale > 2 || text.scale < 0.5) {
+            scaleDirection *= -1;
+        }
     }
 
     const start = () => {
@@ -196,7 +203,7 @@ let RaidAlert = () => {
             },
         };
 
-        setGame(new Phaser.Game(config));
+        new Phaser.Game(config);
     }
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Phaser from 'phaser';
 
 let RaidAlert = (props) => {
@@ -8,7 +8,9 @@ let RaidAlert = (props) => {
     let text;
     let scaleDirection = 1;
 
-    let scaleDimensions = {w: 1440, h: 820};
+    const [clicked, setClicked] = useState(false);
+    const [raider, setRaider] = useState("daddyfartbux");
+    const [raidSize, setRaidSize] = useState(100);
 
     function preload() {
         const yoshiImage = process.env.PUBLIC_URL + '/images/yoshi/yoshi-walk.png';
@@ -62,10 +64,6 @@ let RaidAlert = (props) => {
     }
 
     function create() {
-        const scale = this.game.scale.width/scaleDimensions.w;
-        const raider = props.raider;
-        const raidSize = props.raidSize;
-
         this.anims.create({
             key: 'walkGreen',
             frames: this.anims.generateFrameNumbers('yoshiGreen', { start: 0, end: 9 }),
@@ -124,11 +122,10 @@ let RaidAlert = (props) => {
 
         fanfare.play();
 
-        // Draw yoshis
+        // Draw slimes
         for (let i = 0; i < raidSize; i++) {
             let color = colors[Math.floor(Math.random() * colors.length)];
             let yoshi = this.physics.add.sprite(-i * spacing, Math.random() * this.game.scale.height, `yoshi${color}`);
-            yoshi.setScale(scale);
             yoshi.body.setGravity(0);
             yoshi.anims.play(`walk${color}`, true);
             yoshi.setVelocityX(speed);
@@ -153,11 +150,13 @@ let RaidAlert = (props) => {
         if (yoshiCount <= 0 && timeout) {
             this.scene.stop();
             this.sys.game.destroy(true);
-            
-            if (props.onComplete) {
-                props.onComplete();
-            }
+            setClicked(false);
         }
+
+        // text.angle += rotationDirection * 2;
+        // if (text.angle > 20 || text.angle < -20) {
+        //     rotationDirection *= -1;
+        // }
 
         text.setScale(text.scale + (scaleDirection * 0.01));
         text.tint = Math.random() * 0xffffff;
@@ -190,12 +189,24 @@ let RaidAlert = (props) => {
     }
 
     useEffect(() => {
-        start();
+        // Get url params
+        const urlParams = new URLSearchParams(window.location.search);
+        setRaider(urlParams.get('raider') ? urlParams.get('raider') : "daddyfartbux");
+        setRaidSize(urlParams.get('raidSize') ? urlParams.get('raidSize') : 10);
     }, []);
 
     return (
         <div>
             <div id="phaser" />
+            {clicked ? null : 
+                <div>
+                    <p>Testing with size <b>{raidSize}</b> and raider <b>{raider}</b></p>
+                    <button onClick={() => {
+                        setClicked(true);
+                        start();
+                    }}>Click to Test</button>
+                </div>
+            }
         </div>
     );
 }
