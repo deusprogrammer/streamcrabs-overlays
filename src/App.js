@@ -9,8 +9,7 @@ import TwitchMultiOverlay from './routes/multi/TwitchMultiOverlay';
 import CustomSoundPlayer from './routes/CustomSoundPlayer';
 import SpeechSynthesisTester from './routes/SpeechSynthesisTester';
 import WhatTheDub from './routes/WhatTheDub';
-import ZeldaRaidAlert from './routes/RaidAlert';
-import YoshiRaidAlert from './routes/YoshiRaidAlert';
+import RaidAlertTestHarness from './routes/RaidAlertTestHarness';
 import TTS from './routes/TTS';
 
 class App extends React.Component {
@@ -25,8 +24,7 @@ class App extends React.Component {
 					<Route path={`${process.env.PUBLIC_URL}/death-counter`} component={DeathCounter} exact />
 					<Route path={`${process.env.PUBLIC_URL}/sound-player`} component={CustomSoundPlayer} exact />
 					<Route path={`${process.env.PUBLIC_URL}/requests`} component={RequestQueue} exact />
-					<Route path={`${process.env.PUBLIC_URL}/raid-test/zelda`} component={ZeldaRaidAlert} exact />
-					<Route path={`${process.env.PUBLIC_URL}/raid-test/yoshi`} component={YoshiRaidAlert} exact />
+					<Route path={`${process.env.PUBLIC_URL}/raid-test`} component={RaidAlertTestHarness} exact />
 					<Route path={`${process.env.PUBLIC_URL}/`} component={Home} />
 				</Switch>
 			</Router>
