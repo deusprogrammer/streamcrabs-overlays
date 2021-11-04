@@ -4,42 +4,48 @@ export const configs = {
         sprites: [
             {
                 file: process.env.PUBLIC_URL + '/images/yoshi/yoshi-walk.png',
-                frames: 10,
+                startFrame: 0,
+                endFrame: 9,
                 frameWidth: 128,
                 frameHeight: 128,
                 frameRate: 15
             },
             {
                 file: process.env.PUBLIC_URL + '/images/yoshi/yoshi-walk-black.png',
-                frames: 10,
+                startFrame: 0,
+                endFrame: 9,
                 frameWidth: 128,
                 frameHeight: 128,
                 frameRate: 15
             },
             {
                 file: process.env.PUBLIC_URL + '/images/yoshi/yoshi-walk-blue.png',
-                frames: 10,
+                startFrame: 0,
+                endFrame: 9,
                 frameWidth: 128,
                 frameHeight: 128,
                 frameRate: 15
             },
             {
                 file: process.env.PUBLIC_URL + '/images/yoshi/yoshi-walk-pink.png',
-                frames: 10,
+                startFrame: 0,
+                endFrame: 9,
                 frameWidth: 128,
                 frameHeight: 128,
                 frameRate: 15
             },
             {
                 file: process.env.PUBLIC_URL + '/images/yoshi/yoshi-walk-purple.png',
-                frames: 10,
+                startFrame: 0,
+                endFrame: 9,
                 frameWidth: 128,
                 frameHeight: 128,
                 frameRate: 15
             },
             {
                 file: process.env.PUBLIC_URL + '/images/yoshi/yoshi-walk-yellow.png',
-                frames: 10,
+                startFrame: 0,
+                endFrame: 9,
                 frameWidth: 128,
                 frameHeight: 128,
                 frameRate: 15
@@ -59,7 +65,8 @@ export const configs = {
         sprites: [
             {
                 file: process.env.PUBLIC_URL + '/images/skullman/skullman-walk.png',
-                frames: 10,
+                startFrame: 0,
+                endFrame: 9,
                 frameWidth: 99,
                 frameHeight: 128,
                 frameRate: 15
@@ -79,7 +86,24 @@ export const configs = {
         sprites: [
             {
                 file: process.env.PUBLIC_URL + '/images/chair/cheesesteak-walk.png',
-                frames: 6,
+                startFrame: 0,
+                endFrame: 5,
+                frameWidth: 128,
+                frameHeight: 128,
+                frameRate: 15
+            },
+            {
+                file: process.env.PUBLIC_URL + '/images/chair/yuu.png',
+                startFrame: 24,
+                endFrame: 29,
+                frameWidth: 128,
+                frameHeight: 128,
+                frameRate: 15
+            },
+            {
+                file: process.env.PUBLIC_URL + '/images/chair/tanako.png',
+                startFrame: 30,
+                endFrame: 41,
                 frameWidth: 128,
                 frameHeight: 128,
                 frameRate: 15
@@ -90,7 +114,7 @@ export const configs = {
             volume: 1
         },
         leavingSound: {
-            file: process.env.PUBLIC_URL + '/sounds/chair/fart.mp3',
+            file: process.env.PUBLIC_URL + '/sounds/chair/cheeseitup.wav',
             volume: 1
         }
     }

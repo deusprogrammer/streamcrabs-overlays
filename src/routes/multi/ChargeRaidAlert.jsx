@@ -32,7 +32,7 @@ let RaidAlert = (props) => {
         props.config.sprites.forEach((sprite, index) => {
             this.anims.create({
                 key: `animation${index}`,
-                frames: this.anims.generateFrameNumbers(`sprite${index}`, { start: 0, end: sprite.frames - 1 }),
+                frames: this.anims.generateFrameNumbers(`sprite${index}`, { start: sprite.startFrame, end: sprite.endFrame }),
                 frameRate: sprite.frameRate,
                 repeat: -1
             });
