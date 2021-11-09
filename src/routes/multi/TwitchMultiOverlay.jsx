@@ -3,6 +3,7 @@ import BadApple from './BadApple';
 import BirdUp from './BirdUp';
 import ZeldaRaidAlert from './ZeldaRaidAlert';
 import YoshiRaidAlert from './YoshiRaidAlert';
+import ChargeRaidAlert from './ChargeRaidAlert';
 import RandomCustomVideo from './RandomCustomVideo';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -127,11 +128,17 @@ export default class TwitchMultiOverlay extends React.Component {
                                         onComplete={this.reset}
                                         raider={this.state.currentEvent.eventData.raider}
                                         raidSize={this.state.currentEvent.eventData.raidSize} />;
-                } else {
+                } else if (this.state.currentEvent.eventData.raidTheme === "ZELDA2") {
                     showComponent = <ZeldaRaidAlert 
                                         onComplete={this.reset}
                                         raider={this.state.currentEvent.eventData.raider}
                                         raidSize={this.state.currentEvent.eventData.raidSize} />;
+                } else if (this.state.currentEvent.eventData.raidTheme === "STORED") {
+                    showComponent = <ChargeRaidAlert 
+                                        onComplete={this.reset}
+                                        raider={this.state.currentEvent.eventData.raider}
+                                        raidSize={this.state.currentEvent.eventData.raidSize}
+                                        config={this.state.currentEvent.eventData.raidCustomTheme} />;
                 }
                 break;
         }
