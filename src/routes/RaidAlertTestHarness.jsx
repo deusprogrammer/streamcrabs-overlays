@@ -4,6 +4,17 @@ import ZeldaRaidAlert from './multi/ZeldaRaidAlert';
 import ChargeRaidAlert from './multi/ChargeRaidAlert';
 
 import {configs} from '../util/testData';
+import axios from 'axios';
+
+const getRaidAlert = async (id) => {
+    let found = await axios.get(`https://deusprogrammer.com/api/twitch/raid-configs/${id}`, {
+        headers: {
+            "X-Access-Token": localStorage.getItem("accessToken")
+        }
+    });
+
+    return found.data;
+}
 
 const RaidAlertTestHarness = () => {
     const [clicked, setClicked] = useState(false);
@@ -11,14 +22,22 @@ const RaidAlertTestHarness = () => {
     const [raidSize, setRaidSize] = useState(100);
     const [theme, setTheme] = useState("CUSTOM");
     const [key, setKey] = useState("SKULLMAN");
+    const [storedConfig, setStoredConfig] = useState({});
 
-    useEffect(() => {
+    useEffect(async () => {
         // Get url params
         const urlParams = new URLSearchParams(window.location.search);
+        const raidTheme = urlParams.get('theme');
+        const raidId = urlParams.get('key');
         setRaider(urlParams.get('raider') ? urlParams.get('raider') : "daddyfartbux");
         setRaidSize(urlParams.get('raidSize') ? urlParams.get('raidSize') : 10);
         setTheme(urlParams.get('theme') ? urlParams.get('theme') : "YOSHI");
         setKey(urlParams.get('key') ? urlParams.get('key') : "SKULLMAN");
+
+        if (raidTheme === "STORED") {
+            let config = await getRaidAlert(raidId);
+            setStoredConfig(config);
+        }
     }, []);
 
     let raidAlert = null;
@@ -42,12 +61,17 @@ const RaidAlertTestHarness = () => {
                             raidSize={raidSize} 
                             config={configs[key]}
                             onComplete={() => {setClicked(false)}} />;
+        case "STORED":
+            raidAlert = <ChargeRaidAlert 
+                            raider={raider} 
+                            raidSize={raidSize} 
+                            config={storedConfig}
+                            onComplete={() => {setClicked(false)}} />;
             break;
     }
 
     return (
         <div>
-            <div id="phaser" />
             {clicked ? 
                 raidAlert
              : 
@@ -56,6 +80,10 @@ const RaidAlertTestHarness = () => {
                     <button onClick={() => {
                         setClicked(true);
                     }}>Click to Test</button>
+                    <h3>Debug</h3>
+                    <pre>
+                        {JSON.stringify(storedConfig, null, 5)}
+                    </pre>
                 </div>
             }
         </div>
