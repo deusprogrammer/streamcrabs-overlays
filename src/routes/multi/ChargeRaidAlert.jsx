@@ -41,7 +41,7 @@ let RaidAlert = (props) => {
         let music = this.sound.add('music', {loop: true, volume: props.config.music.volume});
         let leavingSound = this.sound.add('leaving', {loop: false, volume: props.config.leavingSound.volume});
 
-        let speed = Math.ceil(Math.log2(raidSize) * 100);
+        let speed = (Math.ceil(Math.log2(raidSize) + 1) * 100);
         let spacing = Math.ceil(5000/raidSize);
 
         let wall = this.physics.add.sprite(this.game.scale.width + 256, 0, 'ground');
