@@ -45,8 +45,8 @@ let RaidAlert = (props) => {
     }
 
     function create() {
-        const raider = props.raider;
-        const raidSize = props.raidSize;
+        const variable = props.variable;
+        const message = props.message;
         const scale = this.game.scale.width/scaleDimensions.w;
         const groundWidth = this.textures.get('ground').getSourceImage().width * scale;
         const groundHeight = this.textures.get('ground').getSourceImage().height * scale;
@@ -110,7 +110,7 @@ let RaidAlert = (props) => {
         this.physics.add.collider(link, ground);
 
         // Draw slimes
-        for (let i = 0; i < raidSize; i++) {
+        for (let i = 0; i < variable; i++) {
             let slime = this.physics.add.sprite(-i * .5, (Math.random() * (this.game.scale.height - 100)) - (groundHeight - groundHeights[0]), 'slime');
             slime.setScale(scale);
             slime.setBounce(Math.min(1, Math.random() + 0.5));
@@ -161,7 +161,7 @@ let RaidAlert = (props) => {
             g1.refreshBody();
         }
 
-        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, `Raid of ${raidSize} incoming from ${raider}`, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
         text.setOrigin(0.5, 0.5);
 
         // Set timeout

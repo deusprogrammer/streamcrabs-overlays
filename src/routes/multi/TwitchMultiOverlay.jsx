@@ -13,6 +13,7 @@ export default class TwitchMultiOverlay extends React.Component {
     constructor(props) {
         super(props);
         this.queue = [];
+        this.interval = null;
 
         this.state = {
             currentEvent: null
@@ -30,7 +31,11 @@ export default class TwitchMultiOverlay extends React.Component {
                 channelId: urlParams.get("channelId")
             }));
 
-            setInterval(() => {
+            if (this.interval) {
+                clearInterval(this.interval);
+            }
+
+            this.interval = setInterval(() => {
                 ws.send(JSON.stringify({
                     type: "PING_SERVER",
                     from: "PANEL",
@@ -43,7 +48,7 @@ export default class TwitchMultiOverlay extends React.Component {
         ws.onmessage = async (message) => {
             let event = JSON.parse(message.data);
 
-            if (!["BIRDUP", "RANDOM_CUSTOM_VIDEO", "BADAPPLE", "RAID"].includes(event.type)) {
+            if (!["BIRDUP", "BADAPPLE", "VIDEO", "DYNAMIC"].includes(event.type)) {
                 return;
             }
 
@@ -108,36 +113,35 @@ export default class TwitchMultiOverlay extends React.Component {
                                     onComplete={this.reset}
                                     requester={this.state.currentEvent.eventData.requester} />;
                 break;
-            case "RANDOM_CUSTOM_VIDEO":
-                showComponent = <RandomCustomVideo 
-                                    onComplete={this.reset} 
-                                    requester={this.state.currentEvent.eventData.requester}
-                                    url={this.state.currentEvent.eventData.url} 
-                                    mediaName={this.state.currentEvent.eventData.mediaName}
-                                    volume={this.state.currentEvent.eventData.volume}
-                                    chromaKey={this.state.currentEvent.eventData.chromaKey} />;
-                break;
             case "BIRDUP":
                 showComponent = <BirdUp 
                                     onComplete={this.reset}
                                     requester={this.state.currentEvent.eventData.requester} />;
                 break;
-            case "RAID":
+            case "VIDEO":
+                showComponent = <RandomCustomVideo 
+                                    onComplete={this.reset} 
+                                    url={this.state.currentEvent.eventData.url}
+                                    message={this.state.currentEvent.eventData.message}
+                                    volume={this.state.currentEvent.eventData.volume}
+                                    chromaKey={this.state.currentEvent.eventData.chromaKey} />;
+                break;
+            case "DYNAMIC":
                 if (this.state.currentEvent.eventData.raidTheme === "YOSHI") {
                     showComponent = <YoshiRaidAlert 
                                         onComplete={this.reset}
-                                        raider={this.state.currentEvent.eventData.raider}
-                                        raidSize={this.state.currentEvent.eventData.raidSize} />;
+                                        message={this.state.currentEvent.eventData.message}
+                                        variable={this.state.currentEvent.eventData.variable} />;
                 } else if (this.state.currentEvent.eventData.raidTheme === "ZELDA2") {
                     showComponent = <ZeldaRaidAlert 
                                         onComplete={this.reset}
-                                        raider={this.state.currentEvent.eventData.raider}
-                                        raidSize={this.state.currentEvent.eventData.raidSize} />;
+                                        message={this.state.currentEvent.eventData.message}
+                                        variable={this.state.currentEvent.eventData.variable} />;
                 } else if (this.state.currentEvent.eventData.raidTheme === "STORED") {
                     showComponent = <ChargeRaidAlert 
                                         onComplete={this.reset}
-                                        raider={this.state.currentEvent.eventData.raider}
-                                        raidSize={this.state.currentEvent.eventData.raidSize}
+                                        message={this.state.currentEvent.eventData.message}
+                                        variable={this.state.currentEvent.eventData.variable}
                                         config={this.state.currentEvent.eventData.raidCustomTheme} />;
                 }
                 break;

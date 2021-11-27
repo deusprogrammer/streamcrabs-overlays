@@ -9,6 +9,7 @@ class CustomSoundPlayer extends React.Component {
         super();
         this.consumerLocked = false;
         this.soundQueue = [];
+        this.interval = null;
 
         this.state = {
             soundPlaying: false,
@@ -28,7 +29,11 @@ class CustomSoundPlayer extends React.Component {
                 channelId: urlParams.get("channelId")
             }));
 
-            setInterval(() => {
+            if (this.interval) {
+                clearInterval(this.interval);
+            }
+
+            this.interval = setInterval(() => {
                 ws.send(JSON.stringify({
                     type: "PING_SERVER",
                     from: "PANEL",
@@ -40,9 +45,11 @@ class CustomSoundPlayer extends React.Component {
 
         ws.onmessage = async (message) => {
             let event = JSON.parse(message.data);
+
+            console.log("Received: " + JSON.stringify(event, null, 5));
             
-			if (event.type === "CUSTOM_RANDOM_SOUND") {
-                this.soundQueue.push({requester: event.eventData.requester, mediaName: event.eventData.mediaName, url: event.eventData.url, volume: event.eventData.volume})
+			if (event.type === "AUDIO") {
+                this.soundQueue.push({requester: event.eventData.requester, mediaName: event.eventData.mediaName, url: event.eventData.url, volume: event.eventData.volume, message: event.eventData.message})
 			}
         };
 
@@ -65,10 +72,12 @@ class CustomSoundPlayer extends React.Component {
             return;
         }
 
-        let {requester, mediaName, url, volume} = this.soundQueue[0];
+        let {url, volume, message} = this.soundQueue[0];
         this.consumerLocked = true;
         this.soundQueue = this.soundQueue.slice(1);
-        this.setState({requester, mediaName});
+        this.setState({message});
+
+        console.log("PLAYING: " + url);
 
         var audio = new Audio(url);
         this.setState({soundPlaying: true});
@@ -115,8 +124,7 @@ class CustomSoundPlayer extends React.Component {
                             WebkitTextStroke: "1px black",
                             WebkitTextFillColor: "white"
                         }}>
-                            {this.state.requester}<br/>
-                            {this.state.mediaName}
+                            {this.state.message}
                         </span>
                     </div>
                 : null  }

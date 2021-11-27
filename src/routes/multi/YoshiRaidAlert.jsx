@@ -63,8 +63,8 @@ let RaidAlert = (props) => {
 
     function create() {
         const scale = this.game.scale.width/scaleDimensions.w;
-        const raider = props.raider;
-        const raidSize = props.raidSize;
+        const variable = props.variable;
+        const message = props.message;
 
         this.anims.create({
             key: 'walkGreen',
@@ -111,8 +111,8 @@ let RaidAlert = (props) => {
         let fanfare = this.sound.add('fanfare', {loop: true, volume: 1});
         let badum = this.sound.add('badum', {loop: false, volume: 1});
 
-        let speed = Math.ceil(Math.log2(raidSize) * 100);
-        let spacing = Math.ceil(5000/raidSize);
+        let speed = Math.ceil(Math.log2(variable) * 100);
+        let spacing = Math.ceil(5000/variable);
 
         let colors = ["Green", "Purple", "Blue", "Pink", "Yellow", "Black"];
 
@@ -120,12 +120,12 @@ let RaidAlert = (props) => {
         wall.setOrigin(0, 0);
         wall.displayHeight = this.game.scale.height;
 
-        yoshiCount = raidSize;
+        yoshiCount = variable;
 
         fanfare.play();
 
         // Draw yoshis
-        for (let i = 0; i < raidSize; i++) {
+        for (let i = 0; i < variable; i++) {
             let color = colors[Math.floor(Math.random() * colors.length)];
             let yoshi = this.physics.add.sprite(-i * spacing, Math.random() * this.game.scale.height, `yoshi${color}`);
             yoshi.setScale(scale);
@@ -145,7 +145,7 @@ let RaidAlert = (props) => {
             timeout = true;
         }, 15000);
 
-        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, `Raid of ${raidSize} incoming from ${raider}`, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
         text.setOrigin(0.5, 0.5);
     }
 

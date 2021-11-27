@@ -108,7 +108,7 @@ export default class RandomCustomVideo extends React.Component {
                             fontSize: "20pt",
                             WebkitTextStroke: "1px black",
                             WebkitTextFillColor: "white",
-                }}>{this.props.mediaName} from {this.props.requester}</span>
+                }}>{this.props.message}</span>
             </div>
         )
     }
