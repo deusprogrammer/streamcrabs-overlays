@@ -4,7 +4,7 @@ import BirdUp from './BirdUp';
 import ZeldaRaidAlert from './ZeldaRaidAlert';
 import YoshiRaidAlert from './YoshiRaidAlert';
 import ChargeRaidAlert from './ChargeRaidAlert';
-import RandomCustomVideo from './RandomCustomVideo';
+import VideoPlayer from './VideoPlayer';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 let urlParams = new URLSearchParams(window.location.search);
@@ -119,7 +119,7 @@ export default class TwitchMultiOverlay extends React.Component {
                                     requester={this.state.currentEvent.eventData.requester} />;
                 break;
             case "VIDEO":
-                showComponent = <RandomCustomVideo 
+                showComponent = <VideoPlayer 
                                     onComplete={this.reset} 
                                     url={this.state.currentEvent.eventData.url}
                                     message={this.state.currentEvent.eventData.message}

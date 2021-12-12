@@ -2,7 +2,7 @@ import React from 'react';
 
 const RANDOM_VIDEO_COUNT = 7;
 
-export default class RandomCustomVideo extends React.Component {
+export default class VideoPlayer extends React.Component {
     constructor(props) {
         super(props);
         this.videoElement = React.createRef();
@@ -100,15 +100,7 @@ export default class RandomCustomVideo extends React.Component {
                     ref={this.videoElement} />
                 <canvas height={this.state.vh} width={this.state.vw} style={{display: "none"}} ref={this.canvasElement1} />
                 <canvas height={this.state.vh} width={this.state.vw} style={{border: "1px solid black"}} ref={this.canvasElement2} />
-                <span style={{
-                            position: "absolute",
-                            bottom: "0px",
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            fontSize: "20pt",
-                            WebkitTextStroke: "1px black",
-                            WebkitTextFillColor: "white",
-                }}>{this.props.message}</span>
+                <span className="alert-text">{this.props.message}</span>
             </div>
         )
     }

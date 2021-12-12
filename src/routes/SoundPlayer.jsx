@@ -4,7 +4,7 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 let urlParams = new URLSearchParams(window.location.search);
 const randomSoundCount = 24;
 
-class CustomSoundPlayer extends React.Component {
+class SoundPlayer extends React.Component {
     constructor() {
         super();
         this.consumerLocked = false;
@@ -133,4 +133,4 @@ class CustomSoundPlayer extends React.Component {
 	}
 }
 
-export default CustomSoundPlayer;
+export default SoundPlayer;

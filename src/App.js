@@ -6,7 +6,7 @@ import DeathCounter from './routes/DeathCounter';
 import Home from './routes/Home';
 import RequestQueue from './routes/RequestQueue';
 import TwitchMultiOverlay from './routes/multi/TwitchMultiOverlay';
-import CustomSoundPlayer from './routes/CustomSoundPlayer';
+import SoundPlayer from './routes/SoundPlayer';
 import SpeechSynthesisTester from './routes/SpeechSynthesisTester';
 import WhatTheDub from './routes/WhatTheDub';
 import RaidAlertTestHarness from './routes/RaidAlertTestHarness';
@@ -22,7 +22,7 @@ class App extends React.Component {
 					<Route path={`${process.env.PUBLIC_URL}/speech/test`} component={SpeechSynthesisTester} exact />
 					<Route path={`${process.env.PUBLIC_URL}/multi`} component={TwitchMultiOverlay} exact />
 					<Route path={`${process.env.PUBLIC_URL}/death-counter`} component={DeathCounter} exact />
-					<Route path={`${process.env.PUBLIC_URL}/sound-player`} component={CustomSoundPlayer} exact />
+					<Route path={`${process.env.PUBLIC_URL}/sound-player`} component={SoundPlayer} exact />
 					<Route path={`${process.env.PUBLIC_URL}/requests`} component={RequestQueue} exact />
 					<Route path={`${process.env.PUBLIC_URL}/raid-test`} component={RaidAlertTestHarness} exact />
 					<Route path={`${process.env.PUBLIC_URL}/`} component={Home} />
