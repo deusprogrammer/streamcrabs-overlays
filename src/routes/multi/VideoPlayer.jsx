@@ -100,7 +100,6 @@ export default class VideoPlayer extends React.Component {
                     ref={this.videoElement} />
                 <canvas height={this.state.vh} width={this.state.vw} style={{display: "none"}} ref={this.canvasElement1} />
                 <canvas height={this.state.vh} width={this.state.vw} style={{border: "1px solid black"}} ref={this.canvasElement2} />
-                <span className="alert-text">{this.props.message}</span>
             </div>
         )
     }

@@ -7,7 +7,7 @@ let RaidAlert = (props) => {
     let isHurt = false;
     let isDying = false;
     let timeout = null;
-    let text;
+    // let text;
     let scaleDirection = 1;
 
     let scaleDimensions = {w: 1440, h: 820};
@@ -46,7 +46,7 @@ let RaidAlert = (props) => {
 
     function create() {
         const variable = props.variable;
-        const message = props.message;
+        // const message = props.message;
         const scale = this.game.scale.width/scaleDimensions.w;
         const groundWidth = this.textures.get('ground').getSourceImage().width * scale;
         const groundHeight = this.textures.get('ground').getSourceImage().height * scale;
@@ -161,8 +161,8 @@ let RaidAlert = (props) => {
             g1.refreshBody();
         }
 
-        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
-        text.setOrigin(0.5, 0.5);
+        // text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        // text.setOrigin(0.5, 0.5);
 
         // Set timeout
         timeout = setTimeout(() => {
@@ -172,11 +172,11 @@ let RaidAlert = (props) => {
     }
 
     function update() {
-        text.setScale(text.scale + (scaleDirection * 0.01));
-        text.tint = Math.random() * 0xffffff;
-        if (text.scale > 2 || text.scale < 0.5) {
-            scaleDirection *= -1;
-        }
+        // text.setScale(text.scale + (scaleDirection * 0.01));
+        // text.tint = Math.random() * 0xffffff;
+        // if (text.scale > 2 || text.scale < 0.5) {
+        //     scaleDirection *= -1;
+        // }
     }
 
     const start = () => {

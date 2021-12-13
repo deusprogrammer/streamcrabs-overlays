@@ -4,7 +4,7 @@ import Phaser from 'phaser';
 let RaidAlert = (props) => {
     let spriteCount = 0;
     let timeout = false;
-    let text;
+    // let text;
     let scaleDirection = 1;
 
     let scaleDimensions = {w: 1440, h: 820};
@@ -72,8 +72,8 @@ let RaidAlert = (props) => {
             timeout = true;
         }, 15000);
 
-        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
-        text.setOrigin(0.5, 0.5);
+        // text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        // text.setOrigin(0.5, 0.5);
     }
 
     function update() {
@@ -86,11 +86,11 @@ let RaidAlert = (props) => {
             }
         }
 
-        text.setScale(text.scale + (scaleDirection * 0.01));
-        text.tint = Math.random() * 0xffffff;
-        if (text.scale > 2 || text.scale < 0.5) {
-            scaleDirection *= -1;
-        }
+        // text.setScale(text.scale + (scaleDirection * 0.01));
+        // text.tint = Math.random() * 0xffffff;
+        // if (text.scale > 2 || text.scale < 0.5) {
+        //     scaleDirection *= -1;
+        // }
     }
 
     const start = () => {

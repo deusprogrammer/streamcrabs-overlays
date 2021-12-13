@@ -151,6 +151,7 @@ export default class TwitchMultiOverlay extends React.Component {
             <div>
                 <div className="multContainer">
                     {showComponent}
+                    <span className="alert-text">{this.state.currentEvent.eventData.message}</span>
                 </div>
             </div>
         )

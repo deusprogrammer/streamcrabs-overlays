@@ -64,7 +64,7 @@ let RaidAlert = (props) => {
     function create() {
         const scale = this.game.scale.width/scaleDimensions.w;
         const variable = props.variable;
-        const message = props.message;
+        // const message = props.message;
 
         this.anims.create({
             key: 'walkGreen',
@@ -145,8 +145,8 @@ let RaidAlert = (props) => {
             timeout = true;
         }, 15000);
 
-        text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
-        text.setOrigin(0.5, 0.5);
+        // text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
+        // text.setOrigin(0.5, 0.5);
     }
 
     function update() {
