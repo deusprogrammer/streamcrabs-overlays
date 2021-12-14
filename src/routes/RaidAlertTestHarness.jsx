@@ -7,7 +7,7 @@ import {configs} from '../util/testData';
 import axios from 'axios';
 
 const getRaidAlert = async (id) => {
-    let found = await axios.get(`https://deusprogrammer.com/api/twitch/raid-configs/${id}`, {
+    let found = await axios.get(`https://deusprogrammer.com/api/streamcrabs/dynamic-alerts/${id}`, {
         headers: {
             "X-Access-Token": localStorage.getItem("accessToken")
         }
