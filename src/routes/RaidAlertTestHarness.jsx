@@ -45,26 +45,22 @@ const RaidAlertTestHarness = () => {
     switch(theme) {
         case "YOSHI":
             raidAlert = <YoshiRaidAlert 
-                            raider={raider} 
-                            raidSize={raidSize} 
+                            variable={raidSize} 
                             onComplete={() => {setClicked(false)}} />;
             break;
         case "ZELDA":
             raidAlert = <ZeldaRaidAlert 
-                            raider={raider} 
-                            raidSize={raidSize} 
+                            variable={raidSize} 
                             onComplete={() => {setClicked(false)}} />;
             break;
         case "CUSTOM":
             raidAlert = <ChargeRaidAlert 
-                            raider={raider} 
-                            raidSize={raidSize} 
+                            variable={raidSize} 
                             config={configs[key]}
                             onComplete={() => {setClicked(false)}} />;
         case "STORED":
             raidAlert = <ChargeRaidAlert 
-                            raider={raider} 
-                            raidSize={raidSize} 
+                            variable={raidSize} 
                             config={storedConfig}
                             onComplete={() => {setClicked(false)}} />;
             break;
@@ -73,7 +69,10 @@ const RaidAlertTestHarness = () => {
     return (
         <div>
             {clicked ? 
-                raidAlert
+                <div>
+                    {raidAlert}
+                    <span className="alert-text">{`${raider} is raiding with ${raidSize} viewers.`}</span>
+                </div>
              : 
                 <div>
                     <p>Testing with size <b>{raidSize}</b> and raider <b>{raider}</b></p>

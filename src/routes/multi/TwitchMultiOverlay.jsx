@@ -122,7 +122,6 @@ export default class TwitchMultiOverlay extends React.Component {
                 showComponent = <VideoPlayer 
                                     onComplete={this.reset} 
                                     url={this.state.currentEvent.eventData.url}
-                                    message={this.state.currentEvent.eventData.message}
                                     volume={this.state.currentEvent.eventData.volume}
                                     chromaKey={this.state.currentEvent.eventData.chromaKey} />;
                 break;
@@ -130,17 +129,14 @@ export default class TwitchMultiOverlay extends React.Component {
                 if (this.state.currentEvent.eventData.raidTheme === "YOSHI") {
                     showComponent = <YoshiRaidAlert 
                                         onComplete={this.reset}
-                                        message={this.state.currentEvent.eventData.message}
                                         variable={this.state.currentEvent.eventData.variable} />;
                 } else if (this.state.currentEvent.eventData.raidTheme === "ZELDA2") {
                     showComponent = <ZeldaRaidAlert 
                                         onComplete={this.reset}
-                                        message={this.state.currentEvent.eventData.message}
                                         variable={this.state.currentEvent.eventData.variable} />;
                 } else if (this.state.currentEvent.eventData.raidTheme === "STORED") {
                     showComponent = <ChargeRaidAlert 
                                         onComplete={this.reset}
-                                        message={this.state.currentEvent.eventData.message}
                                         variable={this.state.currentEvent.eventData.variable}
                                         config={this.state.currentEvent.eventData.raidCustomTheme} />;
                 }
