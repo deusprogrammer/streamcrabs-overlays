@@ -1,3 +1,8 @@
+body {
+  text-overflow: clip;
+  overflow-wrap: normal;
+}
+
 .App {
   text-align: center;
 }
@@ -67,29 +72,21 @@ body {
 .alert-text {
   position: absolute;
   top: 50%;
-  transform: translate(-50%, -50%);
 
+  font-size: 50pt;
   width: 100vw;
   text-align: center;
 
-  font-size: 50pt;
   font-family: Marker Felt, fantasy;
 
   -webkit-text-stroke: 2px black;
   -webkit-text-fill-color: white;
 
-  animation: text-animation 15s forwards, text-grow-shrink 1s linear infinite;
-}
-
-@keyframes text-animation {
-  0% {left: 0px;}
-  10% {left: 50%;}
-  50% {left: 50%;}
-  100% {left: 50%;}
+  animation: text-grow-shrink 1s linear infinite;
 }
 
 @keyframes text-grow-shrink {
-  0% {font-size: 35pt;}
-  50% {font-size: 50pt;}
-  100% {font-size: 35pt;}
+  0% {transform: scale(0.70);}
+  50% {transform: scale(1);}
+  100% {transform: scale(0.70);}
 }
