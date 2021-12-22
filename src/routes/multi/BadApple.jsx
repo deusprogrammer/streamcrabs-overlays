@@ -1,7 +1,4 @@
 import React from 'react';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-
-let urlParams = new URLSearchParams(window.location.search);
 
 const RED_THRESH   = 177;
 const GREEN_THRESH = 177;
@@ -25,53 +22,7 @@ export default class BadApple extends React.Component {
         }
     }
 
-    // connect = async () => {
-    //     const ws = new W3CWebSocket('wss://deusprogrammer.com/api/ws/twitch');
-
-    //     ws.onopen = () => {
-    //         ws.send(JSON.stringify({
-    //             type: "REGISTER_PANEL",
-    //             from: "PANEL",
-    //             channelId: urlParams.get("channelId")
-    //         }));
-
-    //         setInterval(() => {
-    //             ws.send(JSON.stringify({
-    //                 type: "PING_SERVER",
-    //                 from: "PANEL",
-    //                 channelId: urlParams.get("channelId")
-    //             }));
-    //         }, 20 * 1000);
-    //     };
-
-    //     ws.onmessage = async (message) => {
-    //         let event = JSON.parse(message.data);
-            
-	// 		if (event.type === "BADAPPLE") {
-	// 			this.videoElement.current.play();
-	// 		}
-    //     };
-
-    //     ws.onclose = async (e) => {
-    //         console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
-    //         this.setState({ mobs: [] });
-    //         setTimeout(async () => {
-    //             this.connect();
-    //         }, 5000);
-    //     };
-
-    //     ws.onerror = async (err) => {
-    //         console.error('Socket encountered error: ', err.message, 'Closing socket');
-    //         ws.close();
-    //     };
-    // }
-
     componentDidMount() {
-        // // If a channel id is supplied, connect the websocket for updates via bot commands
-		// if (urlParams.get("channelId")) {
-		// 	this.connect();
-		// }
-
         this.videoElement.current.addEventListener("ended", () => {
             if (this.timeOut) {
                 clearTimeout(this.timeOut);
