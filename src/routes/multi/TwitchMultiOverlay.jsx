@@ -108,11 +108,6 @@ export default class TwitchMultiOverlay extends React.Component {
         }
 
         switch(this.state.currentEvent.type) {
-            case "BADAPPLE":
-                showComponent = <BadApple 
-                                    onComplete={this.reset}
-                                    requester={this.state.currentEvent.eventData.requester} />;
-                break;
             case "BIRDUP":
                 showComponent = <BirdUp 
                                     onComplete={this.reset}

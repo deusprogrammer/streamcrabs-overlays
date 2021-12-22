@@ -85,6 +85,10 @@ export default class VideoPlayer extends React.Component {
                 if (green <= 177 && red <= 177 && blue <= 177) {
                     frame.data[i + 3] = 0;
                 }
+            } else if (this.props.chromaKey === "custom") {
+                if (green >= this.props.lowerBound && green <= this.props.upperBound && red >= this.props.lowerBound && red <= blue >= this.props.lowerBound && this.props.upperBound && blue <= this.props.upperBound) {
+                    frame.data[i + 3] = 0;
+                }
             }
         }
         this.ctx2.putImageData(frame, 0, 0);

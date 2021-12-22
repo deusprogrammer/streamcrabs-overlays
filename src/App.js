@@ -11,6 +11,7 @@ import SpeechSynthesisTester from './routes/SpeechSynthesisTester';
 import WhatTheDub from './routes/WhatTheDub';
 import RaidAlertTestHarness from './routes/RaidAlertTestHarness';
 import TTS from './routes/TTS';
+import VideoTestHarness from './routes/VideoTestHarness';
 
 class App extends React.Component {
 	render() {
@@ -25,6 +26,7 @@ class App extends React.Component {
 					<Route path={`${process.env.PUBLIC_URL}/sound-player`} component={SoundPlayer} exact />
 					<Route path={`${process.env.PUBLIC_URL}/requests`} component={RequestQueue} exact />
 					<Route path={`${process.env.PUBLIC_URL}/raid-test`} component={RaidAlertTestHarness} exact />
+					<Route path={`${process.env.PUBLIC_URL}/video-test`} component={VideoTestHarness} exact />
 					<Route path={`${process.env.PUBLIC_URL}/`} component={Home} />
 				</Switch>
 			</Router>
