@@ -38,9 +38,8 @@ export default class TwitchMultiOverlay extends React.Component {
 		if (urlParams.get("channelId")) {
             this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'DYNAMIC'], urlParams.get('channelId'))
 			this.ws.connect();
+            setInterval(this.consumer, 5000);
 		}
-
-        setInterval(this.consumer, 5000);
     }
 
     componentWillUnmount() {

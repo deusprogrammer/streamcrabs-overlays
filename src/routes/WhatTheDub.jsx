@@ -32,9 +32,8 @@ export default class WhatTheDub extends React.Component {
 		if (urlParams.get("channelId")) {
             this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'WTD', ['DUB'], urlParams.get('channelId'))
 			this.ws.connect();
+            setInterval(this.consumer, 0);
 		}
-
-        setInterval(this.consumer, 0);
     }
 
     componentWillUnmount() {

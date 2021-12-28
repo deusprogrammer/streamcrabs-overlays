@@ -29,10 +29,10 @@ class DeathCounter extends React.Component {
 		if (urlParams.get("channelId")) {
 			this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'DEATH_COUNTER', ['DEATH_COUNT'], urlParams.get('channelId'))
 			this.ws.connect();
+			setInterval(this.consumer, 0);
 		}
 		
         document.addEventListener("contextmenu", (e) => {this.onReset(e)});
-        setInterval(this.consumer, 0);
 	}
 
 	componentWillUnmount() {

@@ -49,10 +49,9 @@ class TTS extends React.Component {
 		if (urlParams.get("channelId")) {
             this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'TTS', ['TTS'], urlParams.get('channelId'))
 			this.ws.connect();
+            setInterval(this.consumer, 0);
+            this.setState({started: true, textList: ["** Connected to Websocket **"]});
 		}
-
-        setInterval(this.consumer, 5000);
-        this.setState({started: true, textList: ["** Connected to Websocket **"]});
     }
 
 	render() {

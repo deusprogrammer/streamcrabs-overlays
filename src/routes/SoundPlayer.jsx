@@ -39,9 +39,8 @@ class SoundPlayer extends React.Component {
 		if (urlParams.get("channelId")) {
             this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'SOUND_PLAYER', ['AUDIO'], urlParams.get('channelId'))
 			this.ws.connect();
+            setInterval(this.consumer, 5000);
 		}
-
-        setInterval(this.consumer, 5000);
     }
 
     componentWillUnmount() {
