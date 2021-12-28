@@ -1,7 +1,7 @@
 import React from 'react'
 
 import WhatTheDubPlayer from './WhatTheDubPlayer';
-import RemoteWebSocket from '../ws/RemoteWebSocket';
+import {createWebSocket} from '../ws/WebSocketFactory';
 
 export default class WhatTheDub extends React.Component {
     constructor(props) {
@@ -29,11 +29,9 @@ export default class WhatTheDub extends React.Component {
 
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.get("channelId")) {
-            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'WTD', ['DUB'], urlParams.get('channelId'))
-			this.ws.connect();
-            setInterval(this.consumer, 0);
-		}
+        this.ws = createWebSocket('WTD', ['DUB'], urlParams.get('channelId'))
+        this.ws.connect();
+        setInterval(this.consumer, 0);
     }
 
     componentWillUnmount() {

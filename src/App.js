@@ -27,6 +27,13 @@ class App extends React.Component {
 					<Route path={`${process.env.PUBLIC_URL}/requests`} component={RequestQueue} exact />
 					<Route path={`${process.env.PUBLIC_URL}/raid-test`} component={RaidAlertTestHarness} exact />
 					<Route path={`${process.env.PUBLIC_URL}/video-test`} component={VideoTestHarness} exact />
+
+					<Route path={`${process.env.PUBLIC_URL}/tools/raid-test`} component={RaidAlertTestHarness} exact />
+					<Route path={`${process.env.PUBLIC_URL}/tools/video-test`} component={VideoTestHarness} exact />
+					<Route path={`${process.env.PUBLIC_URL}/overlays/multi`} component={TwitchMultiOverlay} exact />
+					<Route path={`${process.env.PUBLIC_URL}/overlays/death-counter`} component={DeathCounter} exact />
+					<Route path={`${process.env.PUBLIC_URL}/overlays/sound-player`} component={SoundPlayer} exact />
+					<Route path={`${process.env.PUBLIC_URL}/overlays/requests`} component={RequestQueue} exact />
 					<Route path={`${process.env.PUBLIC_URL}/`} component={Home} />
 				</Switch>
 			</Router>

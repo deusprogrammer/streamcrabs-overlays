@@ -1,5 +1,5 @@
 import React from 'react';
-import RemoteWebSocket from '../ws/RemoteWebSocket';
+import {createWebSocket} from '../ws/WebSocketFactory';
 
 class SoundPlayer extends React.Component {
     constructor(props) {
@@ -36,11 +36,9 @@ class SoundPlayer extends React.Component {
 
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.get("channelId")) {
-            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'SOUND_PLAYER', ['AUDIO'], urlParams.get('channelId'))
-			this.ws.connect();
-            setInterval(this.consumer, 5000);
-		}
+        this.ws = createWebSocket('SOUND_PLAYER', ['AUDIO'], urlParams.get('channelId'))
+        this.ws.connect();
+        setInterval(this.consumer, 5000);
     }
 
     componentWillUnmount() {

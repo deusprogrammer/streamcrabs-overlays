@@ -5,7 +5,7 @@ import ZeldaRaidAlert from './ZeldaRaidAlert';
 import ChargeRaidAlert from './ChargeRaidAlert';
 import VideoPlayer from './VideoPlayer';
 
-import RemoteWebSocket from '../../ws/RemoteWebSocket';
+import {createWebSocket} from '../../ws/WebSocketFactory';
 
 export default class TwitchMultiOverlay extends React.Component {
     constructor(props) {
@@ -35,11 +35,9 @@ export default class TwitchMultiOverlay extends React.Component {
 
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.get("channelId")) {
-            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'DYNAMIC'], urlParams.get('channelId'))
-			this.ws.connect();
-            setInterval(this.consumer, 5000);
-		}
+        this.ws = createWebSocket('MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'DYNAMIC'], urlParams.get('channelId'))
+        this.ws.connect();
+        setInterval(this.consumer, 5000);
     }
 
     componentWillUnmount() {

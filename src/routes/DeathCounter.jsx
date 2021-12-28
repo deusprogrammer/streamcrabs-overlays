@@ -1,5 +1,5 @@
 import React from 'react';
-import RemoteWebSocket from '../ws/RemoteWebSocket';
+import {createWebSocket} from '../ws/WebSocketFactory';
 
 const fontSize = 32;
 
@@ -26,11 +26,9 @@ class DeathCounter extends React.Component {
 
 	componentDidMount() {
 		let urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.get("channelId")) {
-			this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'DEATH_COUNTER', ['DEATH_COUNT'], urlParams.get('channelId'))
-			this.ws.connect();
-			setInterval(this.consumer, 0);
-		}
+		this.ws = createWebSocket('DEATH_COUNTER', ['DEATH_COUNT'], urlParams.get('channelId'))
+		this.ws.connect();
+		setInterval(this.consumer, 0);
 		
         document.addEventListener("contextmenu", (e) => {this.onReset(e)});
 	}

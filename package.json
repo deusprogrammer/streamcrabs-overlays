@@ -19,7 +19,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:electron": "PUBLIC_URL=/ REACT_APP_BUILD_TARGET=electron react-scripts start",
     "build": "react-scripts build",
+    "build:electron": "PUBLIC_URL=/ REACT_APP_BUILD_TARGET=electron react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

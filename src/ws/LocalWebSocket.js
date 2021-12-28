@@ -1,4 +1,6 @@
-export default class LocalWebSocket {
+import AbstractWebSocket from './AbstractWebSocket';
+
+export default class LocalWebSocket extends AbstractWebSocket {
     constructor(wsAddress, panelName, listenFor, channelId) {
         super(wsAddress, panelName, listenFor, channelId);
     }

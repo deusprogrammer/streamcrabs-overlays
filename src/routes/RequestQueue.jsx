@@ -1,5 +1,5 @@
 import React from 'react';
-import RemoteWebSocket from '../ws/RemoteWebSocket';
+import {createWebSocket} from '../ws/WebSocketFactory';
 
 class RequestQueue extends React.Component {
     constructor(props) {
@@ -23,11 +23,9 @@ class RequestQueue extends React.Component {
 
 	componentDidMount() {
 		let urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.get("channelId")) {
-            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'REQUESTS', ['REQUEST'], urlParams.get('channelId'))
-			this.ws.connect();
-            setInterval(this.consumer, 0);
-        }
+        this.ws = createWebSocket('REQUESTS', ['REQUEST'], urlParams.get('channelId'))
+        this.ws.connect();
+        setInterval(this.consumer, 0);
 
         // Cycle between next up view and queue view
         setInterval(() => {

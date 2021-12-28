@@ -6,6 +6,10 @@ export default class RemoteWebSocket extends AbstractWebSocket {
     }
 
     connect = () => {
+        if (!this.channelId) {
+            return;
+        }
+
         this.ws.onopen = () => {
             this.ws.send(JSON.stringify({
                 type: "REGISTER_PANEL",

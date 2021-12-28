@@ -1,7 +1,5 @@
 import React from 'react';
-import RemoteWebSocket from '../ws/RemoteWebSocket';
-
-let urlParams = new URLSearchParams(window.location.search);
+import {createWebSocket} from '../ws/WebSocketFactory';
 
 class TTS extends React.Component {
     constructor(props) {
@@ -46,12 +44,10 @@ class TTS extends React.Component {
 
     start = () => {
         let urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.get("channelId")) {
-            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'TTS', ['TTS'], urlParams.get('channelId'))
-			this.ws.connect();
-            setInterval(this.consumer, 0);
-            this.setState({started: true, textList: ["** Connected to Websocket **"]});
-		}
+        this.ws = createWebSocket('TTS', ['TTS'], urlParams.get('channelId'))
+        this.ws.connect();
+        setInterval(this.consumer, 0);
+        this.setState({started: true, textList: ["** Connected to Websocket **"]});
     }
 
 	render() {
