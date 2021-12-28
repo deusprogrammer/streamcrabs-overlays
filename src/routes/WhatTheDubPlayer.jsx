@@ -153,7 +153,7 @@ export default class WhatTheDubPlayer extends React.Component {
                         }}
                         muted={this.state.muted}
                         ref={this.videoElement}>
-                            <track label="English" kind="subtitles" srclang="en" src={createWebVttDataUri(this.props.subtitles, this.props.substitution)} default></track>
+                            <track label="English" kind="subtitles" srcLang=''="en" src={createWebVttDataUri(this.props.subtitles, this.props.substitution)} default></track>
                     </video>
                 </div>
             </div>

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import YoshiRaidAlert from './multi/YoshiRaidAlert';
 import ZeldaRaidAlert from './multi/ZeldaRaidAlert';
 import ChargeRaidAlert from './multi/ChargeRaidAlert';
 
@@ -43,11 +42,6 @@ const RaidAlertTestHarness = () => {
     let raidAlert = null;
 
     switch(theme) {
-        case "YOSHI":
-            raidAlert = <YoshiRaidAlert 
-                            variable={raidSize} 
-                            onComplete={() => {setClicked(false)}} />;
-            break;
         case "ZELDA":
             raidAlert = <ZeldaRaidAlert 
                             variable={raidSize} 

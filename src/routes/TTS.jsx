@@ -1,14 +1,12 @@
 import React from 'react';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
+import RemoteWebSocket from '../ws/RemoteWebSocket';
 
 let urlParams = new URLSearchParams(window.location.search);
 
 class TTS extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.consumerLocked = false;
-        this.soundQueue = [];
-
         this.state = {
             soundPlaying: false,
             requester: null,
@@ -18,57 +16,14 @@ class TTS extends React.Component {
         }
     }
 
-	connect = async () => {
-        const ws = new W3CWebSocket('wss://deusprogrammer.com/api/ws/twitch');
-
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
-                type: "REGISTER_PANEL",
-                from: "PANEL",
-                name: "TTS",
-                channelId: urlParams.get("channelId")
-            }));
-
-            setInterval(() => {
-                ws.send(JSON.stringify({
-                    type: "PING_SERVER",
-                    from: "PANEL",
-                    name: "TTS",
-                    channelId: urlParams.get("channelId")
-                }));
-            }, 20 * 1000);
-        };
-
-        ws.onmessage = async (message) => {
-            let event = JSON.parse(message.data);
-            
-			if (event.type === "TTS") {
-                this.soundQueue.push({requester: event.eventData.requester, text: event.eventData.text})
-			}
-        };
-
-        ws.onclose = async (e) => {
-            console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
-            this.setState({ mobs: [] });
-            setTimeout(async () => {
-                this.connect();
-            }, 5000);
-        };
-
-        ws.onerror = async (err) => {
-            console.error('Socket encountered error: ', err.message, 'Closing socket');
-            ws.close();
-        };
-    }
-
-    consumer = async () => {
-        if (this.soundQueue.length <= 0 || this.consumerLocked) {
+    consumer = () => {
+        if (!this.ws.hasNext() || this.consumerLocked) {
             return;
         }
 
-        let {requester, text} = this.soundQueue[0];
+        let currentEvent = this.ws.next();
+        let {requester, text} = currentEvent.eventData;
         this.consumerLocked = true;
-        this.soundQueue = this.soundQueue.slice(1);
 
         let msg = new SpeechSynthesisUtterance();
         msg.text = `${requester} said: '${text}'`;
@@ -77,25 +32,26 @@ class TTS extends React.Component {
         textList.push("- " + msg.text);
         window.speechSynthesis.speak(msg);
 
-        this.setState({soundPlaying: true, textList});
+        this.setState({textList});
         msg.onend = () => {
-            this.setState({soundPlaying: false});
             setTimeout(() => {
                 this.consumerLocked = false;
             }, 5000);
         };
     }
 
-	componentDidMount() {
+    componentWillUnmount() {
+		this.ws.disconnect();
 	}
 
     start = () => {
-        // If a channel id is supplied, connect the websocket for updates via bot commands
+        let urlParams = new URLSearchParams(window.location.search);
 		if (urlParams.get("channelId")) {
-			this.connect();
+            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'TTS', ['TTS'], urlParams.get('channelId'))
+			this.ws.connect();
 		}
 
-        setInterval(this.consumer, 0);
+        setInterval(this.consumer, 5000);
         this.setState({started: true, textList: ["** Connected to Websocket **"]});
     }
 

@@ -1,16 +1,11 @@
 import React from 'react';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-
-let urlParams = new URLSearchParams(window.location.search);
-const randomSoundCount = 24;
+import RemoteWebSocket from '../ws/RemoteWebSocket';
 
 class SoundPlayer extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.ws = null;
         this.consumerLocked = false;
-        this.soundQueue = [];
-        this.interval = null;
-
         this.state = {
             soundPlaying: false,
             requester: null,
@@ -18,68 +13,16 @@ class SoundPlayer extends React.Component {
         }
     }
 
-	connect = async () => {
-        const ws = new W3CWebSocket('wss://deusprogrammer.com/api/ws/twitch');
-
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
-                type: "REGISTER_PANEL",
-                from: "PANEL",
-                name: "SOUND_PLAYER",
-                channelId: urlParams.get("channelId")
-            }));
-
-            if (this.interval) {
-                clearInterval(this.interval);
-            }
-
-            this.interval = setInterval(() => {
-                ws.send(JSON.stringify({
-                    type: "PING_SERVER",
-                    from: "PANEL",
-                    name: "SOUND_PLAYER",
-                    channelId: urlParams.get("channelId")
-                }));
-            }, 20 * 1000);
-        };
-
-        ws.onmessage = async (message) => {
-            let event = JSON.parse(message.data);
-
-            console.log("Received: " + JSON.stringify(event, null, 5));
-            
-			if (event.type === "AUDIO") {
-                this.soundQueue.push({requester: event.eventData.requester, mediaName: event.eventData.mediaName, url: event.eventData.url, volume: event.eventData.volume, message: event.eventData.message})
-			}
-        };
-
-        ws.onclose = async (e) => {
-            console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
-            this.setState({ mobs: [] });
-            setTimeout(async () => {
-                this.connect();
-            }, 5000);
-        };
-
-        ws.onerror = async (err) => {
-            console.error('Socket encountered error: ', err.message, 'Closing socket');
-            ws.close();
-        };
-    }
-
     consumer = async () => {
-        if (this.soundQueue.length <= 0 || this.consumerLocked) {
+        if (!this.ws.hasNext() || this.consumerLocked) {
             return;
         }
 
-        let {url, volume, message} = this.soundQueue[0];
+        let currentEvent = this.ws.next();
+        let {url, volume} = currentEvent.eventData;
         this.consumerLocked = true;
-        this.soundQueue = this.soundQueue.slice(1);
-        this.setState({message});
 
-        console.log("PLAYING: " + url);
-
-        var audio = new Audio(url);
+        let audio = new Audio(url);
         this.setState({soundPlaying: true});
         audio.addEventListener("ended", () => {
             this.setState({soundPlaying: false});
@@ -91,13 +34,18 @@ class SoundPlayer extends React.Component {
         await audio.play();
     }
 
-	componentDidMount() {
-		// If a channel id is supplied, connect the websocket for updates via bot commands
+    componentDidMount() {
+        let urlParams = new URLSearchParams(window.location.search);
 		if (urlParams.get("channelId")) {
-			this.connect();
+            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'SOUND_PLAYER', ['AUDIO'], urlParams.get('channelId'))
+			this.ws.connect();
 		}
 
-        setInterval(this.consumer, 0);
+        setInterval(this.consumer, 5000);
+    }
+
+    componentWillUnmount() {
+		this.ws.disconnect();
 	}
 
 	render() {

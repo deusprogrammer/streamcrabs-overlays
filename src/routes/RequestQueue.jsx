@@ -1,68 +1,46 @@
 import React from 'react';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
+import RemoteWebSocket from '../ws/RemoteWebSocket';
 
 let urlParams = new URLSearchParams(window.location.search);
 
 class RequestQueue extends React.Component {
-	state = {
-        mode: "NEXT_UP",
-        requestList: []
+    constructor(props) {
+        super(props);
+        this.ws = null;
+        this.interval = null;
+        this.state = {
+            mode: "NEXT_UP",
+            requestList: []
+        }
     }
 
-	connect = async () => {
-        const ws = new W3CWebSocket('wss://deusprogrammer.com/api/ws/twitch');
+    consumer = () => {
+        if (!this.ws.hasNext()) {
+            return;
+        }
 
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
-                type: "REGISTER_PANEL",
-                from: "PANEL",
-                name: "REQUESTS",
-                channelId: urlParams.get("channelId")
-            }));
-
-            setInterval(() => {
-                ws.send(JSON.stringify({
-                    type: "PING_SERVER",
-                    from: "PANEL",
-                    name: "REQUESTS",
-                    channelId: urlParams.get("channelId")
-                }));
-            }, 20 * 1000);
-        };
-
-        ws.onmessage = async (message) => {
-            let event = JSON.parse(message.data);
-            
-			if (event.type === "REQUEST") {
-				this.setState({requestList: event.eventData.requestList});
-			}
-        };
-
-        ws.onclose = async (e) => {
-            console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
-            this.setState({ mobs: [] });
-            setTimeout(async () => {
-                this.connect();
-            }, 5000);
-        };
-
-        ws.onerror = async (err) => {
-            console.error('Socket encountered error: ', err.message, 'Closing socket');
-            ws.close();
-        };
+        let currentEvent = this.ws.next();
+        this.setState({requestList: currentEvent.eventData.requestList});
     }
 
 	componentDidMount() {
 		// If a channel id is supplied, connect the websocket for updates via bot commands
 		if (urlParams.get("channelId")) {
-			this.connect();
+            this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'REQUESTS', ['REQUEST'], urlParams.get('channelId'))
+			this.ws.connect();
         }
+
+        setInterval(this.consumer, 5000);
 
         // Cycle between next up view and queue view
         setInterval(() => {
             this.showQueue();
         }, 1000 * 60);
 	}
+
+    componentWillUnmount() {
+        this.ws.disconnect();
+    }
 
     showQueue = () => {
         this.setState({mode: "QUEUE"});

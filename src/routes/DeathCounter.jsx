@@ -1,72 +1,43 @@
 import React from 'react';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-
-let urlParams = new URLSearchParams(window.location.search);
+import RemoteWebSocket from '../ws/RemoteWebSocket';
 
 const fontSize = 32;
 
 class DeathCounter extends React.Component {
-	state = {
-		deaths: 0,
-		textScale: 1
-	}
+	constructor(props) {
+        super(props);
+        this.ws = null;
+        this.interval = null;
+        this.state = {
+            currentEvent: null,
+			deaths: 0,
+			textScale: 1
+        }
+    }
 
-	connect = async () => {
-        const ws = new W3CWebSocket('wss://deusprogrammer.com/api/ws/twitch');
+    consumer = () => {
+        if (!this.ws.hasNext()) {
+            return;
+        }
 
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
-                type: "REGISTER_PANEL",
-                from: "PANEL",
-				name: "DEATH_COUNTER",
-                channelId: urlParams.get("channelId")
-            }));
-
-			setInterval(() => {
-                ws.send(JSON.stringify({
-                    type: "PING_SERVER",
-                    from: "PANEL",
-					name: "DEATH_COUNTER",
-                    channelId: urlParams.get("channelId")
-                }));
-            }, 20 * 1000);
-        };
-
-        ws.onmessage = async (message) => {
-            let event = JSON.parse(message.data);
-            
-			if (event.type === "DEATH_COUNT") {
-				this.onDeath(event.eventData.count);
-			}
-        };
-
-        ws.onclose = async (e) => {
-            console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
-            this.setState({ mobs: [] });
-            setTimeout(async () => {
-                this.connect();
-            }, 5000);
-        };
-
-        ws.onerror = async (err) => {
-            console.error('Socket encountered error: ', err.message, 'Closing socket');
-            ws.close();
-        };
+        let currentEvent = this.ws.next();
+        this.onDeath(currentEvent.eventData.count);
     }
 
 	componentDidMount() {
-		// If a channel id is supplied, connect the websocket for updates via bot commands
+		let urlParams = new URLSearchParams(window.location.search);
 		if (urlParams.get("channelId")) {
-			this.connect();
+			this.ws = new RemoteWebSocket('wss://deusprogrammer.com/api/ws/twitch', 'DEATH_COUNTER', ['DEATH_COUNT'], urlParams.get('channelId'))
+			this.ws.connect();
 		}
 		
-		document.addEventListener("click", () => {this.onDeath()});
         document.addEventListener("contextmenu", (e) => {this.onReset(e)});
+        setInterval(this.consumer, 0);
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener("click", () => {this.onDeath()});
         document.removeEventListener("contextmenu", (e) => {this.onReset(e)});
+		this.ws.disconnect();
 	}
 
 	onReset = (e) => {
