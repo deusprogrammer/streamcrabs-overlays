@@ -1,5 +1,3 @@
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-
 export default class RemoteWebSocket {
     constructor(wsAddress, panelName, listenFor, channelId) {
         this.channelId = channelId;
@@ -7,7 +5,8 @@ export default class RemoteWebSocket {
         this.listenFor = listenFor;
         this.interval = null;
         this.queue = [];
-        this.ws = new W3CWebSocket(wsAddress);
+        this.wsAddress = wsAddress;
+        this.ws = null;
     }
 
     connect = () => {}

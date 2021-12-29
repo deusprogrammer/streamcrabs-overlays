@@ -13,7 +13,8 @@ export default class TwitchMultiOverlay extends React.Component {
         this.ws = null;
         this.interval = null;
         this.state = {
-            currentEvent: null
+            currentEvent: null,
+            connected: false
         }
     }
 
@@ -35,7 +36,7 @@ export default class TwitchMultiOverlay extends React.Component {
 
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
-        this.ws = createWebSocket('MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'DYNAMIC'], urlParams.get('channelId'))
+        this.ws = createWebSocket('MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'DYNAMIC'], urlParams.get('channelId'), () => {this.setState({connected: true})});
         this.ws.connect();
         setInterval(this.consumer, 5000);
     }
@@ -80,7 +81,8 @@ export default class TwitchMultiOverlay extends React.Component {
 
         return (
             <div>
-                <div className="multContainer">
+                <div className="multiContainer">
+                    {this.state.connected ? <span className="red-dot" /> : null}
                     {showComponent}
                     <span className="alert-text">{this.state.currentEvent.eventData.message}</span>
                 </div>

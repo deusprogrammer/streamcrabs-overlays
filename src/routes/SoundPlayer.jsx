@@ -36,7 +36,7 @@ class SoundPlayer extends React.Component {
 
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
-        this.ws = createWebSocket('SOUND_PLAYER', ['AUDIO'], urlParams.get('channelId'))
+        this.ws = createWebSocket('SOUND_PLAYER', ['AUDIO'], urlParams.get('channelId'), () => {this.setState({connected: true})});
         this.ws.connect();
         setInterval(this.consumer, 5000);
     }

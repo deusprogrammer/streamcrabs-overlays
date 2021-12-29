@@ -1,4 +1,5 @@
 import AbstractWebSocket from './AbstractWebSocket';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 export default class LocalWebSocket extends AbstractWebSocket {
     constructor(wsAddress, panelName, listenFor, channelId) {
@@ -6,6 +7,7 @@ export default class LocalWebSocket extends AbstractWebSocket {
     }
 
     connect = () => {
+        this.ws = new W3CWebSocket(this.wsAddress);
         this.ws.onopen = () => {
             this.ws.send(JSON.stringify({
                 type: "PANEL_INIT",
@@ -40,6 +42,7 @@ export default class LocalWebSocket extends AbstractWebSocket {
     
         this.ws.onclose = (e) => {
             console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
+            clearInterval(this.interval);
             setTimeout(() => {
                 this.connect();
             }, 5000);
