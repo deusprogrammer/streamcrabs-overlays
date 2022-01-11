@@ -42,8 +42,10 @@ export default class RemoteWebSocket extends AbstractWebSocket {
             if (event.type === "REGISTER_PANEL_SUCCESS") {
                 console.log("Connected to bot");
             }
+
+            let subPanel = event.eventData.subPanel ? event.eventData.subPanel : "default";
     
-            if (!this.listenFor.includes(event.type) || this.label !== event.eventData.subPanel) {
+            if (!this.listenFor.includes(event.type) || this.label !== subPanel) {
                 return;
             }
     

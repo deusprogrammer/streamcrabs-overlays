@@ -37,7 +37,7 @@ export default class TwitchMultiOverlay extends React.Component {
 
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
-        this.ws = createWebSocket('MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'IMAGE', 'DYNAMIC'], urlParams.get('channelId'), urlParams.get('label') ? urlParams.get('label') : "default", () => {this.setState({connected: true})});
+        this.ws = createWebSocket('MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'IMAGE', 'DYNAMIC'], urlParams.get('channelId'), urlParams.get('subPanel') ? urlParams.get('subPanel') : "default", () => {this.setState({connected: true})});
         this.ws.connect();
         setInterval(this.consumer, 5000);
     }

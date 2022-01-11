@@ -23,7 +23,7 @@ class RequestQueue extends React.Component {
 
 	componentDidMount() {
 		let urlParams = new URLSearchParams(window.location.search);
-        this.ws = createWebSocket('REQUESTS', ['REQUEST'], urlParams.get('channelId'))
+        this.ws = createWebSocket('REQUESTS', ['REQUEST'], urlParams.get('channelId'));
         this.ws.connect();
         setInterval(this.consumer, 0);
 

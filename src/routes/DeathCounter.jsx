@@ -26,7 +26,7 @@ class DeathCounter extends React.Component {
 
 	componentDidMount() {
 		let urlParams = new URLSearchParams(window.location.search);
-		this.ws = createWebSocket('DEATH_COUNTER', ['DEATH_COUNT'], urlParams.get('channelId'))
+		this.ws = createWebSocket('DEATH_COUNTER', ['DEATH_COUNT'], urlParams.get('channelId'));
 		this.ws.connect();
 		setInterval(this.consumer, 0);
 		

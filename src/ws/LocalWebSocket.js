@@ -30,8 +30,10 @@ export default class LocalWebSocket extends AbstractWebSocket {
     
         this.ws.onmessage = (message) => {
             let event = JSON.parse(message.data);
+
+            let subPanel = event.eventData.subPanel ? event.eventData.subPanel : "default";
     
-            if (!this.listenFor.includes(event.type) || this.label !== event.eventData.subPanel) {
+            if (!this.listenFor.includes(event.type) || this.label !== subPanel) {
                 return;
             }
     
