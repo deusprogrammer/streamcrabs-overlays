@@ -6,6 +6,7 @@ import ChargeRaidAlert from './ChargeRaidAlert';
 import VideoPlayer from './VideoPlayer';
 
 import {createWebSocket} from '../../ws/WebSocketFactory';
+import GifPlayer from './GifPlayer';
 
 export default class TwitchMultiOverlay extends React.Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export default class TwitchMultiOverlay extends React.Component {
 
     componentDidMount() {
         let urlParams = new URLSearchParams(window.location.search);
-        this.ws = createWebSocket('MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'DYNAMIC'], urlParams.get('channelId'), () => {this.setState({connected: true})});
+        this.ws = createWebSocket('MULTI', ['BIRDUP', 'BADAPPLE', 'VIDEO', 'IMAGE', 'DYNAMIC'], urlParams.get('channelId'), urlParams.get('label') ? urlParams.get('label') : "default", () => {this.setState({connected: true})});
         this.ws.connect();
         setInterval(this.consumer, 5000);
     }
@@ -63,7 +64,16 @@ export default class TwitchMultiOverlay extends React.Component {
                                     onComplete={this.reset} 
                                     url={this.state.currentEvent.eventData.url}
                                     volume={this.state.currentEvent.eventData.volume}
+                                    soundUrl={this.state.currentEvent.eventData.soundUrl}
+                                    soundVolume={this.state.currentEvent.eventData.soundVolume}
                                     chromaKey={this.state.currentEvent.eventData.chromaKey} />;
+                break;
+            case "IMAGE":
+                showComponent = <GifPlayer
+                                    onComplete={this.reset}
+                                    url={this.state.currentEvent.eventData.url}
+                                    soundUrl={this.state.currentEvent.eventData.soundUrl}
+                                    volume={this.state.currentEvent.eventData.soundVolume} />
                 break;
             case "DYNAMIC":
                 if (this.state.currentEvent.eventData.raidTheme === "ZELDA2") {
@@ -82,7 +92,6 @@ export default class TwitchMultiOverlay extends React.Component {
         return (
             <div>
                 <div className="multiContainer">
-                    {this.state.connected ? <span className="red-dot" /> : null}
                     {showComponent}
                     <span className="alert-text">{this.state.currentEvent.eventData.message}</span>
                 </div>

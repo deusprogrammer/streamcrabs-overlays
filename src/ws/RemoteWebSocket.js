@@ -2,8 +2,8 @@ import AbstractWebSocket from './AbstractWebSocket';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 export default class RemoteWebSocket extends AbstractWebSocket {
-    constructor(wsAddress, panelName, listenFor, channelId) {
-        super(wsAddress, panelName, listenFor, channelId);
+    constructor(wsAddress, panelName, listenFor, channelId, label) {
+        super(wsAddress, panelName, listenFor, channelId, label);
     }
 
     connect = () => {
@@ -43,7 +43,7 @@ export default class RemoteWebSocket extends AbstractWebSocket {
                 console.log("Connected to bot");
             }
     
-            if (!this.listenFor.includes(event.type)) {
+            if (!this.listenFor.includes(event.type) || this.label !== event.eventData.subPanel) {
                 return;
             }
     

@@ -1,6 +1,7 @@
 export default class RemoteWebSocket {
-    constructor(wsAddress, panelName, listenFor, channelId) {
+    constructor(wsAddress, panelName, listenFor, channelId, label) {
         this.channelId = channelId;
+        this.label = label;
         this.panelName = panelName;
         this.listenFor = listenFor;
         this.interval = null;
