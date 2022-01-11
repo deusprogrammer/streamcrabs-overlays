@@ -17,7 +17,8 @@ export default class RemoteWebSocket extends AbstractWebSocket {
                 type: "REGISTER_PANEL",
                 from: "PANEL",
                 name: this.panelName,
-                channelId: this.channelId
+                channelId: this.channelId,
+                subPanel: this.label
             }));
     
             if (this.interval) {
@@ -29,7 +30,8 @@ export default class RemoteWebSocket extends AbstractWebSocket {
                     type: "PING_SERVER",
                     from: "PANEL",
                     name: this.panelName,
-                    channelId: this.channelId
+                    channelId: this.channelId,
+                    subPanel: this.label
                 }));
             }, 20 * 1000);
         };
