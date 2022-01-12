@@ -76,15 +76,15 @@ export default class TwitchMultiOverlay extends React.Component {
                                     volume={this.state.currentEvent.eventData.soundVolume} />
                 break;
             case "DYNAMIC":
-                if (this.state.currentEvent.eventData.raidTheme === "ZELDA2") {
+                if (this.state.currentEvent.eventData.theme === "ZELDA2") {
                     showComponent = <ZeldaRaidAlert 
                                         onComplete={this.reset}
                                         variable={this.state.currentEvent.eventData.variable} />;
-                } else if (this.state.currentEvent.eventData.raidTheme === "STORED") {
+                } else if (this.state.currentEvent.eventData.theme === "STORED") {
                     showComponent = <ChargeRaidAlert 
                                         onComplete={this.reset}
                                         variable={this.state.currentEvent.eventData.variable}
-                                        config={this.state.currentEvent.eventData.raidCustomTheme} />;
+                                        config={this.state.currentEvent.eventData.customTheme} />;
                 }
                 break;
         }
