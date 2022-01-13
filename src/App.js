@@ -12,6 +12,7 @@ import WhatTheDub from './routes/WhatTheDub';
 import RaidAlertTestHarness from './routes/RaidAlertTestHarness';
 import TTS from './routes/TTS';
 import VideoTestHarness from './routes/VideoTestHarness';
+import Gauge from './routes/Gauge';
 
 class App extends React.Component {
 	render() {
@@ -34,6 +35,7 @@ class App extends React.Component {
 					<Route path={`${process.env.PUBLIC_URL}/overlays/death-counter`} component={DeathCounter} exact />
 					<Route path={`${process.env.PUBLIC_URL}/overlays/sound-player`} component={SoundPlayer} exact />
 					<Route path={`${process.env.PUBLIC_URL}/overlays/requests`} component={RequestQueue} exact />
+					<Route path={`${process.env.PUBLIC_URL}/overlays/gauges`} component={Gauge} exact />
 					<Route path={`${process.env.PUBLIC_URL}/`} component={Home} />
 				</Switch>
 			</Router>
