@@ -25,7 +25,7 @@ let RaidAlert = (props) => {
     function create() {
         const scale = this.game.scale.width/scaleDimensions.w;
         const variable = props.variable;
-        const message = props.message;
+        const variant = props.config.variant ? props.config.variant : "CHARGE_RIGHT";
 
         props.config.sprites.forEach((sprite, index) => {
             this.anims.create({
@@ -42,9 +42,25 @@ let RaidAlert = (props) => {
         let speed = (Math.ceil(Math.log2(variable) + 1) * 100);
         let spacing = Math.ceil(5000/variable);
 
-        let wall = this.physics.add.sprite(this.game.scale.width + 256, 0, 'ground');
-        wall.setOrigin(0, 0);
-        wall.displayHeight = this.game.scale.height;
+        let wall;
+
+        if (variant === "CHARGE_RIGHT") {
+            wall = this.physics.add.sprite(this.game.scale.width + 256, 0, 'ground');
+            wall.setOrigin(0, 0);
+            wall.displayHeight = this.game.scale.height;
+        } else if (variant === "CHARGE_LEFT") {
+            wall = this.physics.add.sprite(-256, 0, 'ground');
+            wall.setOrigin(1, 0);
+            wall.displayHeight = this.game.scale.height;
+        } else if (variant === "CHARGE_UP") {
+            wall = this.physics.add.sprite(0, -256, 'ground');
+            wall.setOrigin(0, 1);
+            wall.displayWidth = this.game.scale.width;
+        } else if (variant === "CHARGE_DOWN") {
+            wall = this.physics.add.sprite(0, this.game.scale.width + 256, 'ground');
+            wall.setOrigin(0, 0);
+            wall.displayWidth = this.game.scale.width;
+        }
 
         spriteCount = variable;
 
@@ -53,13 +69,38 @@ let RaidAlert = (props) => {
         // Draw sprites
         for (let i = 0; i < variable; i++) {
             let r = Math.floor(Math.random() * props.config.sprites.length);
-            const spriteHeight = this.textures.get(`sprite${r}`).getSourceImage().height * scale;
-            let sprite = this.physics.add.sprite(-i * spacing, Math.random() * (this.game.scale.height - spriteHeight), `sprite${r}`);
-            sprite.setOrigin(0, 0);
-            sprite.setScale(scale);
-            sprite.body.setGravity(0);
-            sprite.anims.play(`animation${r}`, true);
-            sprite.setVelocityX(speed);
+            let sprite;
+            const spriteHeight = props.config.sprites[r].frameHeight * scale;
+            const spriteWidth = props.config.sprites[r].frameWidth * scale;
+            if (variant === "CHARGE_RIGHT") {
+                sprite = this.physics.add.sprite(-i * spacing, Math.random() * (this.game.scale.height - spriteHeight), `sprite${r}`);
+                sprite.setOrigin(0, 0);
+                sprite.setScale(scale);
+                sprite.body.setGravity(0);
+                sprite.anims.play(`animation${r}`, true);
+                sprite.setVelocityX(speed);
+            } else if (variant === "CHARGE_LEFT") {
+                sprite = this.physics.add.sprite((i * spacing) + this.game.scale.width, Math.random() * (this.game.scale.height - spriteHeight), `sprite${r}`);
+                sprite.setOrigin(0, 0);
+                sprite.setScale(scale);
+                sprite.body.setGravity(0);
+                sprite.anims.play(`animation${r}`, true);
+                sprite.setVelocityX(-speed);
+            } else if (variant === "CHARGE_UP") {
+                sprite = this.physics.add.sprite(Math.random() * (this.game.scale.width - spriteWidth), (i * spacing) + this.game.scale.height, `sprite${r}`);
+                sprite.setOrigin(0, 0);
+                sprite.setScale(scale);
+                sprite.body.setGravity(0);
+                sprite.anims.play(`animation${r}`, true);
+                sprite.setVelocityY(-speed);
+            } else if (variant === "CHARGE_DOWN") {
+                sprite = this.physics.add.sprite(Math.random() * (this.game.scale.width - spriteWidth), -i * spacing, `sprite${r}`);
+                sprite.setOrigin(0, 0);
+                sprite.setScale(scale);
+                sprite.body.setGravity(0);
+                sprite.anims.play(`animation${r}`, true);
+                sprite.setVelocityY(speed);
+            }
 
             this.physics.add.overlap(sprite, wall, () => {
                 leavingSound.play();
@@ -71,9 +112,6 @@ let RaidAlert = (props) => {
         setTimeout(() => {
             timeout = true;
         }, 15000);
-
-        // text = this.add.text(0.5 * this.game.scale.width, 0.5 * this.game.scale.height, message, { fontSize: "30pt", stroke: "#000", strokeThickness: 5 });
-        // text.setOrigin(0.5, 0.5);
     }
 
     function update() {
