@@ -4,8 +4,6 @@ import Phaser from 'phaser';
 let RaidAlert = (props) => {
     let spriteCount = 0;
     let timeout = false;
-    // let text;
-    let scaleDirection = 1;
 
     let scaleDimensions = {w: 1440, h: 820};
 
@@ -52,10 +50,12 @@ let RaidAlert = (props) => {
 
         music.play();
 
-        // Draw yoshis
+        // Draw sprites
         for (let i = 0; i < variable; i++) {
             let r = Math.floor(Math.random() * props.config.sprites.length);
-            let sprite = this.physics.add.sprite(-i * spacing, Math.random() * this.game.scale.height, `sprite${r}`);
+            const spriteHeight = this.textures.get(`sprite${r}`).getSourceImage().height * scale;
+            let sprite = this.physics.add.sprite(-i * spacing, Math.random() * (this.game.scale.height - spriteHeight), `sprite${r}`);
+            sprite.setOrigin(0, 0);
             sprite.setScale(scale);
             sprite.body.setGravity(0);
             sprite.anims.play(`animation${r}`, true);
