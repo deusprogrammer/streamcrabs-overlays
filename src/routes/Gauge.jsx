@@ -82,7 +82,7 @@ export default () => {
 
     return (
         <div style={{position: "relative"}}>
-            <progress style={{height: "100px", width: "100vw"}} value={progress} max={max}>{progress}%</progress><br/>
+            <progress style={{height: "100vh", maxHeight: "100px", width: "100vw"}} value={progress} max={max}>{progress}%</progress><br/>
             <span style={{position: "absolute", top: "50%", transform: "translateY(-50%)", textAlign: "center", width: "100vw", fontSize: "30px", fontFamily: "Marker Felt, fantasy", WebkitTextStrokeWidth: "1px", WebkitTextStrokeColor: "black", color: "white"}}>{`${label} ${progress}/${max}`}</span>
         </div>
     )
