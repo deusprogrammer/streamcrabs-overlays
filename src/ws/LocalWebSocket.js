@@ -9,23 +9,27 @@ export default class LocalWebSocket extends AbstractWebSocket {
     connect = () => {
         this.ws = new W3CWebSocket(this.wsAddress);
         this.ws.onopen = () => {
-            this.ws.send(JSON.stringify({
-                type: "PANEL_INIT",
-                from: "PANEL",
-                name: this.panelName
-            }));
-
-            if (this.interval) {
-                clearInterval(this.interval);
-            }
-
-            this.interval = setInterval(() => {
+            this.label.forEach((l) => {
                 this.ws.send(JSON.stringify({
-                    type: "PANEL_PING",
+                    type: "PANEL_INIT",
                     from: "PANEL",
-                    name: this.panelName
+                    name: this.panelName,
+                    subPanel: l
                 }));
-            }, 20 * 1000);
+
+                if (this.intervals[l]) {
+                    clearInterval(this.interval);
+                }
+
+                this.intervals[l] = setInterval(() => {
+                    this.ws.send(JSON.stringify({
+                        type: "PANEL_PING",
+                        from: "PANEL",
+                        name: this.panelName,
+                        subPanel: l
+                    }));
+                }, 20 * 1000);
+            });
         };
     
         this.ws.onmessage = (message) => {
@@ -33,7 +37,7 @@ export default class LocalWebSocket extends AbstractWebSocket {
 
             let subPanel = event.eventData && event.eventData.subPanel ? event.eventData.subPanel : "default";
     
-            if (!this.listenFor.includes(event.type) || this.label !== subPanel) {
+            if (!this.listenFor.includes(event.type) || !this.label.includes(subPanel)) {
                 return;
             }
     

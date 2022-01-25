@@ -13,6 +13,7 @@ import RaidAlertTestHarness from './routes/RaidAlertTestHarness';
 import TTS from './routes/TTS';
 import VideoTestHarness from './routes/VideoTestHarness';
 import Gauge from './routes/Gauge';
+import MultiGauge from './routes/MultiGauge';
 
 class App extends React.Component {
 	render() {
@@ -36,6 +37,7 @@ class App extends React.Component {
 					<Route path={`${process.env.PUBLIC_URL}/overlays/sound-player`} component={SoundPlayer} exact />
 					<Route path={`${process.env.PUBLIC_URL}/overlays/requests`} component={RequestQueue} exact />
 					<Route path={`${process.env.PUBLIC_URL}/overlays/gauges`} component={Gauge} exact />
+					<Route path={`${process.env.PUBLIC_URL}/overlays/mgauge`} component={MultiGauge} exact />
 					<Route path={`${process.env.PUBLIC_URL}/`} component={Home} />
 				</Switch>
 			</Router>

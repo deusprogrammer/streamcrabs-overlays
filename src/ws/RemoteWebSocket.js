@@ -13,27 +13,29 @@ export default class RemoteWebSocket extends AbstractWebSocket {
 
         this.ws = new W3CWebSocket(this.wsAddress);
         this.ws.onopen = () => {
-            this.ws.send(JSON.stringify({
-                type: "REGISTER_PANEL",
-                from: "PANEL",
-                name: this.panelName,
-                channelId: this.channelId,
-                subPanel: this.label
-            }));
-    
-            if (this.interval) {
-                clearInterval(this.interval);
-            }
-    
-            this.interval = setInterval(() => {
+            this.label.forEach((l) => {
                 this.ws.send(JSON.stringify({
-                    type: "PING_SERVER",
+                    type: "REGISTER_PANEL",
                     from: "PANEL",
                     name: this.panelName,
                     channelId: this.channelId,
-                    subPanel: this.label
+                    subPanel: l
                 }));
-            }, 20 * 1000);
+        
+                if (this.interval[l]) {
+                    clearInterval(this.interval[l]);
+                }
+        
+                this.interval[l] = setInterval(() => {
+                    this.ws.send(JSON.stringify({
+                        type: "PING_SERVER",
+                        from: "PANEL",
+                        name: this.panelName,
+                        channelId: this.channelId,
+                        subPanel: l
+                    }));
+                }, 20 * 1000);
+            });
         };
     
         this.ws.onmessage = (message) => {
@@ -46,8 +48,8 @@ export default class RemoteWebSocket extends AbstractWebSocket {
             }
 
             let subPanel = event.eventData && event.eventData.subPanel ? event.eventData.subPanel : "default";
-    
-            if (!this.listenFor.includes(event.type) || this.label !== subPanel) {
+
+            if (!this.listenFor.includes(event.type) || !this.label.includes(subPanel)) {
                 return;
             }
     
@@ -56,7 +58,9 @@ export default class RemoteWebSocket extends AbstractWebSocket {
     
         this.ws.onclose = (e) => {
             console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
-            clearInterval(this.interval);
+            for (let l of this.label) {
+                clearInterval(this.interval[l]);
+            }
             setTimeout(() => {
                 this.connect();
             }, 5000);

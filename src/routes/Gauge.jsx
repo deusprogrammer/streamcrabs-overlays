@@ -47,7 +47,7 @@ export default () => {
 
     const onProgressChange = (newProgress) => {
         let deltaT = 100;
-        let deltaP = (newProgress - currentProgress)/10;
+        let deltaP = (newProgress - currentProgress)/20;
         newProgress = parseInt(newProgress);
         let interval = setInterval(() => {
             setProgress((oldValue) => {

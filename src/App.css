@@ -89,10 +89,28 @@ body {
   animation: text-grow-shrink 1s linear infinite;
 }
 
+.appearing {
+  animation: appear 1s linear;
+}
+
+.disappearing {
+  animation: disappear 1s linear;
+}
+
 @keyframes text-grow-shrink {
   0% {transform: scale(0.70);}
   50% {transform: scale(1);}
   100% {transform: scale(0.70);}
+}
+
+@keyframes appear {
+  0% {opacity: 0.0;}
+  100% {opacity: 1.0;}
+}
+
+@keyframes disappear {
+  0% {opacity: 1.0;}
+  100% {opacity: 0.0;}
 }
 
 a {
