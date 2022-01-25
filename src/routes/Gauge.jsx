@@ -42,7 +42,11 @@ export default () => {
         ws = createWebSocket('GAUGE', ['GAUGE'], urlParams.get('channelId'), urlParams.get('subPanel') ? urlParams.get('subPanel') : "default", () => {});
         ws.connect();
         setLabel(urlParams.get('label'));
-        setInterval(consumer, 5000);
+        const interval = setInterval(consumer, 5000);
+
+        return () => {
+            clearInterval(interval);
+        }
     }, []);
 
     const onProgressChange = (newProgress) => {
