@@ -17,10 +17,10 @@ export default () => {
 
         let event = ws.next();
         if (!event.eventData.init) {
-            onProgressChange(event.eventData.subPanel, event.eventData.currentValue);
+            onProgressChange(event.eventData.gaugeKey, event.eventData.currentValue);
         } else {
             console.log("Adding Gauge: " + event.eventData.subPanel);
-            gaugeState[event.eventData.subPanel] = {
+            gaugeState[event.eventData.gaugeKey] = {
                 label: event.eventData.label,
                 currentProgress: event.eventData.currentValue,
                 maxValue: event.eventData.maxValue,
@@ -48,6 +48,10 @@ export default () => {
             console.log("GAUGES:     " + gaugeKeys);
             console.log("NEXT GAUGE: " + JSON.stringify(gauge, null, 5));
 
+            if (!gauge) {
+                return;
+            }
+
             setIsDisappearing(true);
             setTimeout(() => {
                 setDisplayGauge({
@@ -62,7 +66,7 @@ export default () => {
 
     useEffect(() => {
         let urlParams = new URLSearchParams(window.location.search);
-        ws = createWebSocket('GAUGE', ['GAUGE'], urlParams.get('channelId'), urlParams.get('subPanels') ? urlParams.get('subPanels').split(",") : [], () => {});
+        ws = createWebSocket('GAUGE', ['GAUGE'], urlParams.get('channelId'), "_ALL_GAUGES", () => {});
         ws.connect();
         const consumerInt = setInterval(consumer, 500);
         const gaugeInt = setInterval(gaugeChange, 10000);
