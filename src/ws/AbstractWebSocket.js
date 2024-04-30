@@ -1,4 +1,4 @@
-export default class RemoteWebSocket {
+export default class AbstractWebSocket {
     constructor(wsAddress, panelName, listenFor, channelId, label) {
         this.channelId = channelId;
         if (!Array.isArray(label)) {

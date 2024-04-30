@@ -87,6 +87,8 @@ export default class TwitchMultiOverlay extends React.Component {
                                         config={this.state.currentEvent.eventData.customTheme} />;
                 }
                 break;
+            default:
+                break;
         }
 
         return (

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {createWebSocket} from '../ws/WebSocketFactory';
 
-export default () => {
+const MultiGauge = () => {
     let ws;
     const [isFilling, setIsFilling] = useState(false);
     const [displayGauge, setDisplayGauge] = useState(null);
@@ -130,3 +130,5 @@ export default () => {
         </div>
     )
 }
+
+export default MultiGauge;

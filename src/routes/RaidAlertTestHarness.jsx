@@ -23,7 +23,7 @@ const RaidAlertTestHarness = () => {
     const [key, setKey] = useState("SKULLMAN");
     const [storedConfig, setStoredConfig] = useState({});
 
-    useEffect(async () => {
+    useEffect(() => {
         // Get url params
         const urlParams = new URLSearchParams(window.location.search);
         const raidTheme = urlParams.get('theme');
@@ -33,10 +33,12 @@ const RaidAlertTestHarness = () => {
         setTheme(urlParams.get('theme') ? urlParams.get('theme') : "YOSHI");
         setKey(urlParams.get('key') ? urlParams.get('key') : "SKULLMAN");
 
-        if (raidTheme === "STORED") {
-            let config = await getRaidAlert(raidId);
-            setStoredConfig(config);
-        }
+        (async () => {
+            if (raidTheme === "STORED") {
+                let config = await getRaidAlert(raidId);
+                setStoredConfig(config);
+            }
+        })();
     }, []);
 
     let raidAlert = null;
@@ -52,12 +54,15 @@ const RaidAlertTestHarness = () => {
                             variable={raidSize} 
                             config={configs[key]}
                             onComplete={() => {setClicked(false)}} />;
+            break;
         case "STORED":
             raidAlert = <ChargeRaidAlert 
                             variable={raidSize} 
                             config={storedConfig}
                             onComplete={() => {setClicked(false)}} />;
             break;
+        default:
+            raidAlert = null;
     }
 
     return (
@@ -74,6 +79,9 @@ const RaidAlertTestHarness = () => {
                         setClicked(true);
                     }}>Click to Test</button>
                     <h3>Debug</h3>
+                    <div>
+                        Screen Size: {window.innerWidth}X{window.innerHeight}
+                    </div>
                     <pre>
                         {JSON.stringify(storedConfig, null, 5)}
                     </pre>

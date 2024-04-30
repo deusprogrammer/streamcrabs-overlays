@@ -134,8 +134,8 @@ let RaidAlert = (props) => {
     const start = () => {
         const config = {
             type: Phaser.AUTO,
-            width: "100vw",
-            height: "100vh",
+            width: window.innerWidth,
+            height: window.innerHeight,
             transparent: true,
             parent: "phaser",
             scene: {

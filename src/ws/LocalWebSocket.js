@@ -17,11 +17,11 @@ export default class LocalWebSocket extends AbstractWebSocket {
                     subPanel: l
                 }));
 
-                if (this.intervals[l]) {
+                if (this.interval[l]) {
                     clearInterval(this.interval);
                 }
 
-                this.intervals[l] = setInterval(() => {
+                this.interval[l] = setInterval(() => {
                     this.ws.send(JSON.stringify({
                         type: "PANEL_PING",
                         from: "PANEL",
